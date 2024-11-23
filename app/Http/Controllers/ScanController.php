@@ -41,8 +41,10 @@ class ScanController extends Controller
                 'os' => $result['os'] ?? 'N/A',
                 'isp' => $result['isp'] ?? 'N/A',
                 'org' => $result['org'] ?? 'N/A',
-                'ports' => implode(', ', $result['ports'] ?? []), // Pastikan ports ada
-                'vulns' => $result['vulns'] ?? [], // Pastikan vulns ada
+                'ports' => $result['ports'] ?? [], // Simpan sebagai array
+                'vulns' => $result['vulns'] ?? [], // Daftar CVE
+                'latitude' => $result['latitude'] ?? null, // Tambahkan latitude
+                'longitude' => $result['longitude'] ?? null, // Tambahkan longitude
             ];
         } catch (RequestException $e) {
             // Tangani kesalahan jika permintaan ke Shodan gagal
@@ -53,14 +55,11 @@ class ScanController extends Controller
         $data['cve_details'] = [];
         foreach ($data['vulns'] as $cve) {
             try {
-                // Mengambil deskripsi CVE dari API CVE Details
                 $cveResponse = $this->client->get("https://cve.circl.lu/api/cve/$cve");
                 $cveData = json_decode($cveResponse->getBody(), true);
-                // Simpan CVE dan deskripsi dalam format yang diinginkan
-                $data['cve_details'][$cve] = $cveData['summary'] ?? 'No description available';
+                $data['cve_details'][$cve] = $cveData['summary'] ?? 'Tidak ada deskripsi';
             } catch (RequestException $e) {
-                // Tangani kesalahan jika permintaan ke CVE gagal
-                $data['cve_details'][$cve] = 'Error retrieving CVE details: ' . $e->getMessage();
+                $data['cve_details'][$cve] = 'Gagal mengambil data CVE: ' . $e->getMessage();
             }
         }
 
@@ -71,55 +70,43 @@ class ScanController extends Controller
                     'x-apikey' => $this->virusTotalApiKey,
                 ],
             ]);
+
             $virusTotalResult = json_decode($virusTotalResponse->getBody(), true);
-            $data['virus_total'] = $virusTotalResult['data'] ?? null; // Menyimpan hasil VirusTotal
+            $attributes = $virusTotalResult['data']['attributes'] ?? [];
+
+            $data['virus_total'] = [
+                'community_score' => $attributes['last_analysis_stats']['malicious'] ?? 0,
+                'last_analysis_date' => $attributes['last_analysis_date'] ?? 'N/A',
+                'last_analysis_results' => $attributes['last_analysis_results'] ?? [],
+            ];
         } catch (RequestException $e) {
-            // Tangani kesalahan jika permintaan ke VirusTotal gagal
             $data['virus_total'] = 'Gagal mengambil data dari VirusTotal: ' . $e->getMessage();
         }
 
-        return view('results', compact('data')); // Tampilkan hasil di view results.blade.php
-
         // Mengambil hasil pemindaian dari OTX
-    // Mengambil hasil pemindaian dari OTX
-    try {
-        $otxResponse = $this->client->get("https://otx.alienvault.com/api/v1/indicators/IPv4/{$ip}", [
-            'headers' => [
-                'X-OTX-API-KEY' => $this->otxApiKey,
-            ],
-        ]);
-        $otxResult = json_decode($otxResponse->getBody(), true);
-        $data['otx'] = $otxResult ?? 'Gagal mengambil data dari OTX.';
-    } catch (RequestException $e) {
-        $data['otx'] = 'Gagal mengambil data dari OTX: ' . $e->getMessage();
-    }
-
-    // Menampilkan hasil scan pada view
-    return view('results', compact('data'));
-
-    }
-
-    public function search(Request $request)
-    {
-        $apiKey = 'YOUR_SHODAN_API_KEY';  // Ganti dengan API key Shodan Anda
-        $query = $request->input('query'); // Parameter pencarian dari pengguna
-
-        $client = new Client();
-        
         try {
-            $response = $client->request('GET', 'https://api.shodan.io/shodan/host/search', [
-                'query' => [
-                    'key' => $apiKey,
-                    'query' => $query,
+            $otxResponse = $this->client->get("https://otx.alienvault.com/api/v1/indicators/IPv4/{$ip}", [
+                'headers' => [
+                    'X-OTX-API-KEY' => $this->otxApiKey,
                 ],
             ]);
 
-            $data = json_decode($response->getBody(), true);
-
-            // Mengirim data ke view
-            return view('shodan_search', ['data' => $data]);
-        } catch (\Exception $e) {
-            return response()->json(['error' => 'Gagal melakukan pencarian ke Shodan: ' . $e->getMessage()], 500);
+            $otxResult = json_decode($otxResponse->getBody(), true);
+            $data['otx'] = [
+                'threat_level' => $otxResult['pulse_info']['threat_level'] ?? 'Tidak tersedia',
+            ];
+        } catch (RequestException $e) {
+            $data['otx'] = 'Gagal mengambil data dari OTX: ' . $e->getMessage();
         }
+
+        // Data statistik untuk Chart.js
+        $data['chart_data'] = [
+            'ports_open' => count($data['ports']), // Jumlah port terbuka
+            'cve_count' => count($data['vulns']),  // Jumlah CVE ditemukan
+            'malicious_count' => $data['virus_total']['community_score'] ?? 0, // Skor VirusTotal
+        ];
+
+        return view('scanner', compact('data'));
     }
+
 }

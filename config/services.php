@@ -35,10 +35,5 @@ return [
         ],
     ],
 
-    // config/services.php
-    'shodan' => [
-        'key' => env('API_KEY_SHODAN'),
-    ],
-
 
 ];

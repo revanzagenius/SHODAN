@@ -18,7 +18,8 @@ Route::get('/shodan', [ShodanController::class, 'index'])->name('search.index');
 Route::get('/shodan/search', [ShodanController::class, 'search'])->name('shodan.search');
 
 Route::get('/scan', [ScanController::class, 'index'])->name('ipscanner');
-Route::post('/shodan/scan', [ScanController::class, 'scan']);
+Route::post('/shodan/scan', [ScanController::class, 'scan']); // Rute untuk melakukan pemindaian
+
 
 // Route::post('/scan', [ScanController::class, 'storeScan'])->name('scan.store');
 
