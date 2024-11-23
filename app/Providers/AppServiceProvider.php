@@ -11,7 +11,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+       // Daftarkan service ke container Laravel
+       $this->app->singleton(ShodanService::class, function ($app) {
+            return new ShodanService();
+        });
     }
 
     /**

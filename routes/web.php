@@ -9,10 +9,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
+Route::post('/scan', [DashboardController::class, 'scan'])->name('scan');
+Route::get('/result/{id}', [DashboardController::class, 'showResult'])->name('result');
 
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-Route::post('/dashboard/add-ip', [DashboardController::class, 'addIp'])->name('dashboard.add.ip');
-Route::get('/dashboard/ips', [DashboardController::class, 'listIps'])->name('dashboard.list.ips');
 
 Route::get('/shodan', [ShodanController::class, 'index'])->name('search.index');
 Route::get('/shodan/search', [ShodanController::class, 'search'])->name('shodan.search');
