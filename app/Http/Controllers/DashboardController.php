@@ -4,9 +4,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ShodanHost;
 use GuzzleHttp\Client;
+use App\Models\ShodanHost;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class DashboardController extends Controller
 {
@@ -94,6 +95,19 @@ class DashboardController extends Controller
         } catch (\Exception $e) {
             return redirect()->route('dashboard.index')->withErrors('Failed to scan IP: ' . $e->getMessage());
         }
+    }
+
+    // Fungsi untuk menampilkan PDF
+    public function exportPdf($id)
+    {
+        // Ambil data host berdasarkan ID
+        $host = ShodanHost::findOrFail($id);
+
+        // Menghasilkan PDF menggunakan view yang sudah ada
+        $pdf = Pdf::loadView('pdf', compact('host'));
+
+        // Menyajikan PDF sebagai download
+        return $pdf->download("scan_result_{$host->ip}.pdf");
     }
 
 }

@@ -3,9 +3,54 @@
 @section('title', 'IP Vulnerability Scanner')
 
 @section('content')
+<style>
+    body {
+    background-color: black;
+    color: white;
+}
+
+.container {
+    background-color: black;
+    color: white;
+}
+
+.card {
+    background-color: #333; /* Gelap untuk card */
+    color: white;
+}
+
+.table {
+    background-color: #555; /* Abu-abu untuk tabel */
+    color: white;
+}
+
+.table th, .table td {
+    color: white; /* Pastikan teks di tabel berwarna putih */
+}
+
+.card-header {
+    background-color: #007bff; /* Ubah warna header jika perlu */
+    color: white;
+}
+
+.btn-primary, .btn-info, .btn-secondary {
+    background-color: #007bff; /* Sesuaikan warna tombol */
+    border-color: #0056b3;
+}
+
+.text-center a {
+    background-color: #6c757d;
+    color: white;
+}
+
+    /* CSS tambahan untuk teks CVE */
+    .cve-item {
+        color: white; /* Warna putih */
+        font-weight: bold; /* Teks tebal */
+    }
+</style>
 <body>
     <div class="container" style="margin-left: 250px;">
-        <h1 class="text-center">IP Vulnerability Scanner</h1>
         <div class="card">
             <form action="{{ url('/shodan/scan') }}" method="POST">
                 @csrf
@@ -54,17 +99,17 @@
                                 </tr>
 
                                 @if(!empty($data['cve_details']))
-                                    <h6 class="mt-4">Kerentanan Ditemukan (CVE):</h6>
-                                    <ul class="list-group">
-                                        @foreach($data['cve_details'] as $cve => $description)
-                                            <li class="list-group-item">
-                                                <strong>{{ $cve }}</strong>: {{ $description }}
-                                            </li>
-                                        @endforeach
-                                    </ul>
-                                @else
-                                    <p class="text-danger mt-4">Tidak ada kerentanan yang ditemukan.</p>
-                                @endif
+                                <h6 class="mt-4">Kerentanan Ditemukan (CVE):</h6>
+                                <ul class="list-group">
+                                    @foreach($data['cve_details'] as $cve => $description)
+                                        <li class="list-group-item">
+                                            <strong>{{ $cve }}</strong>: {{ $description }}
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            @else
+                                <p class="text-danger mt-4">Tidak ada kerentanan yang ditemukan.</p>
+                            @endif
                             </div>
                         </div>
                     </div>
@@ -146,11 +191,6 @@
             </div>
         </div>
         @endif
-
-    <!-- Tombol Kembali -->
-    <div class="text-center mt-4">
-        <a href="/shodan" class="btn btn-secondary">Kembali</a>
-    </div>
 </div>
 
 <!-- Scripts -->

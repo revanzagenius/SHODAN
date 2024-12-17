@@ -51,10 +51,10 @@ class ScanController extends Controller
             return redirect()->back()->withErrors(['error' => 'Gagal mengambil data dari Shodan: ' . $e->getMessage()]);
         }
 
-        // Mendapatkan deskripsi CVE dari Shodan
         $data['cve_details'] = [];
         foreach ($data['vulns'] as $cve) {
             try {
+                // Ambil deskripsi CVE dari API Circle.LU
                 $cveResponse = $this->client->get("https://cve.circl.lu/api/cve/$cve");
                 $cveData = json_decode($cveResponse->getBody(), true);
                 $data['cve_details'][$cve] = $cveData['summary'] ?? 'Tidak ada deskripsi';
@@ -62,6 +62,7 @@ class ScanController extends Controller
                 $data['cve_details'][$cve] = 'Gagal mengambil data CVE: ' . $e->getMessage();
             }
         }
+
 
         // Mengambil hasil pemindaian dari VirusTotal
         try {
@@ -108,5 +109,4 @@ class ScanController extends Controller
 
         return view('scanner', compact('data'));
     }
-
 }
