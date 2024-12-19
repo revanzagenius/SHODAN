@@ -25,8 +25,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // Menjadwalkan command 'shodan:check-updates' untuk dijalankan setiap hari
-        $schedule->command('shodan:check-updates')->daily();
+        // Menjadwalkan pengecekan port setiap 15 menit
+        $schedule->command('ports:check')->everyMinute();  // Jalankan command setiap menit
         $schedule->command('domains:update')->daily(); // Menjadwalkan pembaruan domain tiap hari
     }
 

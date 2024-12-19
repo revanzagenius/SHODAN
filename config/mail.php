@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'default' => env('MAIL_MAILER', 'log'),
+    'default' => env('MAIL_MAILER', 'smtp'),
 
     /*
     |--------------------------------------------------------------------------
@@ -55,11 +55,9 @@ return [
 
         'postmark' => [
             'transport' => 'postmark',
-            // 'message_stream_id' => env('POSTMARK_MESSAGE_STREAM_ID'),
-            // 'client' => [
-            //     'timeout' => 5,
-            // ],
+            // 'token' => env('POSTMARK_API_TOKEN'), // Pastikan token API Postmark terisi
         ],
+
 
         'resend' => [
             'transport' => 'resend',
@@ -95,6 +93,10 @@ return [
             ],
         ],
 
+        'mailgun' => [
+        'transport' => 'mailgun',
+    ],
+
     ],
 
     /*
@@ -112,5 +114,14 @@ return [
         'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
         'name' => env('MAIL_FROM_NAME', 'Example'),
     ],
+
+'mailers' => [
+    'mailgun' => [
+        'transport' => 'mailgun',
+        'domain' => env('MAILGUN_DOMAIN'),
+        'secret' => env('MAILGUN_SECRET'),  // Pastikan ini sesuai dengan kunci di .env
+    ],
+],
+
 
 ];

@@ -10,7 +10,13 @@
         "guzzlehttp/guzzle": "^7.9",
         "laravel/framework": "^11.9",
         "laravel/tinker": "^2.9",
-        "maatwebsite/excel": "3.1.55"
+        "maatwebsite/excel": "3.1.55",
+        "mailgun/mailgun-php": "^4.3",
+        "symfony/http-client": "^7.2",
+        "symfony/mailer": "^7.2",
+        "symfony/mailgun-mailer": "^7.1",
+        "symfony/postmark-mailer": "^7.2",
+        "wildbit/postmark-php": "^6.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

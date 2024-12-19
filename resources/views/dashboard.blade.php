@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container-fluid" style="background: linear-gradient(to bottom, #000000, #3a3a3a); color: white; min-height: 100vh; padding: 20px; margin-top: 30px;">
+    <div class="container-fluid" style="background: linear-gradient(to bottom, #000000, #000000); color: white; min-height: 100vh; padding: 20px; margin-top: 30px;">
 
         <!-- Menampilkan pesan sukses atau error -->
         @if (session('success'))

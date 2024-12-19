@@ -42,6 +42,7 @@ class DashboardController extends Controller
     public function scan(Request $request)
     {
         $ip = $request->input('ip');
+        $email = $request->input('email'); // Ambil email dari form input
         $data = [];
 
         try {
@@ -63,6 +64,7 @@ class DashboardController extends Controller
             // Menyimpan data hasil scan ke dalam database
             $host = ShodanHost::create([
                 'ip' => $result['ip_str'] ?? 'N/A',
+                'email' => $email,
                 'hostnames' => json_encode($result['hostnames'] ?? []),
                 'country' => $result['country_name'] ?? 'N/A',
                 'city' => $result['city'] ?? 'N/A',
@@ -77,13 +79,22 @@ class DashboardController extends Controller
 
             // Mengambil deskripsi CVE dari Circle.LU API
             $cveDetails = [];
-            foreach ($result['vulns'] as $cve) {
-                try {
-                    $cveResponse = $this->client->get("https://cve.circl.lu/api/cve/$cve");
-                    $cveData = json_decode($cveResponse->getBody(), true);
-                    $cveDetails[$cve] = $cveData['summary'] ?? 'Tidak ada deskripsi';
-                } catch (\Exception $e) {
-                    $cveDetails[$cve] = 'Gagal mengambil data CVE: ' . $e->getMessage();
+            if (isset($result['vulns']) && is_array($result['vulns'])) {
+                foreach ($result['vulns'] as $cve) {
+                    // Validasi format CVE
+                    if (preg_match('/^CVE-\d{4}-\d{4,}$/', $cve)) {
+                        try {
+                            $cveResponse = $this->client->get("https://cve.circl.lu/api/cve/$cve");
+                            $cveData = json_decode($cveResponse->getBody(), true);
+
+                            $cveDetails[$cve] = $cveData['containers']['cna']['descriptions'][0]['value']
+                                                ?? 'Tidak ada deskripsi';
+                        } catch (\Exception $e) {
+                            $cveDetails[$cve] = 'Gagal mengambil data CVE: ' . $e->getMessage();
+                        }
+                    } else {
+                        $cveDetails[$cve] = 'Format CVE tidak valid';
+                    }
                 }
             }
 
@@ -96,6 +107,8 @@ class DashboardController extends Controller
             return redirect()->route('dashboard.index')->withErrors('Failed to scan IP: ' . $e->getMessage());
         }
     }
+
+
 
     // Fungsi untuk menampilkan PDF
     public function exportPdf($id)
@@ -110,4 +123,54 @@ class DashboardController extends Controller
         return $pdf->download("scan_result_{$host->ip}.pdf");
     }
 
+    public function handleNewPortData(Request $request)
+    {
+        // Mendapatkan IP dan email dari input
+        $ip = $request->input('ip');
+        $email = $request->input('email');
+
+        // Menggunakan Client untuk memanggil API Shodan
+        try {
+            $response = $this->client->get("https://api.shodan.io/shodan/host/{$ip}?key={$this->shodanApiKey}");
+            $shodanData = json_decode($response->getBody(), true);
+
+            if ($shodanData && isset($shodanData['ports'])) {
+                $serviceData = $shodanData['ports']; // Ambil data port
+
+                // Mencari atau membuat host berdasarkan IP
+                $host = ShodanHost::firstOrCreate(
+                    ['ip' => $ip],
+                    ['email' => $email]
+                );
+
+                // Menyimpan port baru jika belum ada
+                foreach ($serviceData as $portNumber) {
+                    $existingPort = Port::where('shodan_host_id', $host->id)
+                                       ->where('port_number', $portNumber)
+                                       ->first();
+
+                    if (!$existingPort) {
+                        // Simpan port baru
+                        $port = $host->ports()->create([
+                            'port_number' => $portNumber,
+                            'asset_group' => 'Unknown', // Update sesuai data yang Anda butuhkan
+                            'trigger' => 'New port detected', // Update sesuai data yang Anda butuhkan
+                            'version' => 'Unknown', // Update sesuai data yang Anda butuhkan
+                            'details' => json_encode(['port' => $portNumber]),
+                        ]);
+
+                        // Kirim email ke pengguna ketika port baru ditemukan
+                        $this->sendPortNewEmail($host->email, $port);
+                    }
+                }
+
+                return response()->json(['message' => 'Port data processed and email sent.']);
+            } else {
+                return response()->json(['message' => 'No open ports found or error occurred.'], 400);
+            }
+
+        } catch (RequestException $e) {
+            return response()->json(['message' => 'Error calling Shodan API: ' . $e->getMessage()], 500);
+        }
+    }
 }

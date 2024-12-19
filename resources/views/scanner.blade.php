@@ -5,160 +5,93 @@
 @section('content')
 <style>
     body {
-    background-color: black;
-    color: white;
-}
+        background-color: black;
+        color: white;
+        font-family: Arial, sans-serif;
+    }
 
-.container {
-    background-color: black;
-    color: white;
-}
+    .container {
+        margin-top: 20px;
+    }
 
-.card {
-    background-color: #333; /* Gelap untuk card */
-    color: white;
-}
+    .card {
+        background-color: #333;
+        color: white;
+        border: 1px solid #444;
+        margin-bottom: 20px;
+    }
 
-.table {
-    background-color: #555; /* Abu-abu untuk tabel */
-    color: white;
-}
+    .card-header {
+        background-color: #007bff;
+        color: white;
+    }
 
-.table th, .table td {
-    color: white; /* Pastikan teks di tabel berwarna putih */
-}
+    .card-body {
+        padding: 15px;
+    }
 
-.card-header {
-    background-color: #007bff; /* Ubah warna header jika perlu */
-    color: white;
-}
+    .table {
+        background-color: #444;
+        color: white;
+        border: 1px solid #555;
+    }
 
-.btn-primary, .btn-info, .btn-secondary {
-    background-color: #007bff; /* Sesuaikan warna tombol */
-    border-color: #0056b3;
-}
+    .table th, .table td {
+        color: white;
+        font-weight: bold;
+        text-align: left;
+    }
 
-.text-center a {
-    background-color: #6c757d;
-    color: white;
-}
+    .table th {
+        background-color: #555;
+    }
 
-    /* CSS tambahan untuk teks CVE */
-    .cve-item {
-        color: white; /* Warna putih */
-        font-weight: bold; /* Teks tebal */
+    .btn-info {
+        background-color: #007bff;
+        border-color: #0056b3;
+    }
+
+    .btn-info:hover {
+        background-color: #0056b3;
+    }
+
+    #scanStatsChart {
+        width: 300px;  /* Ukuran chart pie */
+        height: 300px; /* Ukuran chart pie */
+    }
+
+    .text-danger {
+        color: #ff4d4d;
     }
 </style>
+
 <body>
-    <div class="container" style="margin-left: 250px;">
+    <div class="container mt-5">
+        <!-- Form Input -->
         <div class="card">
-            <form action="{{ url('/shodan/scan') }}" method="POST">
-                @csrf
-                <div class="form-group">
-                    <label for="ip">Input IP :</label>
-                    <input type="text" class="form-control" id="ip" name="ip" placeholder="192.168.X.X" required>
-                </div>
-                <button type="submit" class="btn btn-primary btn-block" style="margin-top : 10px;">Scan IP</button>
-            </form>
+            <div class="card-header">
+                <h5>Scan IP Address</h5>
+            </div>
+            <div class="card-body">
+                <form action="{{ url('/shodan/scan') }}" method="POST">
+                    @csrf
+                    <div class="form-group">
+                        <label for="ip">Input IP :</label>
+                        <input type="text" class="form-control" id="ip" name="ip" placeholder="192.168.X.X" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block mt-3">Scan IP</button>
+                </form>
+            </div>
         </div>
 
-        @if(isset($data))
-        <div class="row mt-5">
-            <!-- Shodan Results (Summary) -->
-            <div class="col-lg-12">
-                <div class="card shadow">
-                    <div class="card-header bg-success text-white">
-                        <h5 class="mb-0" data-bs-toggle="collapse" data-bs-target="#shodanSummary" aria-expanded="false" aria-controls="shodanSummary">
-                            Ringkasan Hasil Pemindaian Shodan
-                        </h5>
-                    </div>
-                    <div class="collapse" id="shodanSummary">
-                        <div class="card-body">
-                            <table class="table table-bordered">
-                                <tbody>
-                                    <tr>
-                                        <th>IP Address</th>
-                                        <td>{{ $data['ip'] }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>OS</th>
-                                        <td>{{ $data['os'] ?? 'N/A' }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>ISP</th>
-                                        <td>{{ $data['isp'] ?? 'N/A' }}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-
-                            <button class="btn btn-info" data-bs-toggle="collapse" data-bs-target="#shodanDetails">Lihat Detail</button>
-                            <div class="collapse mt-3" id="shodanDetails">
-                                <tr>
-                                    <th>Port Terbuka</th>
-                                    <td>{{ implode(', ', $data['ports']) }}</td>
-                                </tr>
-
-                                @if(!empty($data['cve_details']))
-                                <h6 class="mt-4">Kerentanan Ditemukan (CVE):</h6>
-                                <ul class="list-group">
-                                    @foreach($data['cve_details'] as $cve => $description)
-                                        <li class="list-group-item">
-                                            <strong>{{ $cve }}</strong>: {{ $description }}
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            @else
-                                <p class="text-danger mt-4">Tidak ada kerentanan yang ditemukan.</p>
-                            @endif
-                            </div>
-                        </div>
-                    </div>
+        @if(!empty($data['chart_data']))
+        <div class="col-lg-12 mt-5">
+            <div class="card shadow">
+                <div class="card-header bg-info text-white">
+                    <h5>Statistik Pemindaian</h5>
                 </div>
-            </div>
-
-            <!-- VirusTotal Results (Summary) -->
-            <div class="col-lg-12 mt-5">
-                <div class="card shadow">
-                    <div class="card-header bg-warning text-dark">
-                        <h5 class="mb-0" data-bs-toggle="collapse" data-bs-target="#virusTotalSummary" aria-expanded="false" aria-controls="virusTotalSummary">
-                            Ringkasan Hasil Pemindaian VirusTotal
-                        </h5>
-                    </div>
-                    <div class="collapse" id="virusTotalSummary">
-                        <div class="card-body">
-                            <table class="table table-bordered">
-                                <tbody>
-                                    <tr>
-                                        <th>Community Score</th>
-                                        <td>{{ $data['virus_total']['community_score'] }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Tanggal Analisis Terakhir</th>
-                                        <td>{{ $data['virus_total']['last_analysis_date'] }}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-
-                            <button class="btn btn-info" data-bs-toggle="collapse" data-bs-target="#virusTotalDetails">Lihat Detail</button>
-                            <div class="collapse mt-3" id="virusTotalDetails">
-                                <h6>Detail Analisis Vendor Keamanan:</h6>
-                                <ul class="list-group">
-                                    @foreach($data['virus_total']['last_analysis_results'] as $vendor => $result)
-                                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                                            {{ $vendor }}
-                                            @if($result['category'] == 'malicious')
-                                                <span class="badge bg-danger">Malicious</span>
-                                            @elseif($result['category'] == 'clean')
-                                                <span class="badge bg-success">Clean</span>
-                                            @else
-                                                <span class="badge bg-secondary">Unrated</span>
-                                            @endif
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
+                <div class="card-body">
+                    <canvas id="scanStatsChart"></canvas> <!-- Ukuran chart akan diatur melalui CSS -->
                 </div>
             </div>
         </div>
@@ -178,15 +111,114 @@
         </div>
         @endif
 
-        <!-- Chart.js -->
-        @if(!empty($data['chart_data']))
-        <div class="col-lg-12 mt-5">
-            <div class="card shadow">
-                <div class="card-header bg-info text-white">
-                    <h5>Statistik Pemindaian</h5>
+        <!-- Results -->
+        @if(isset($data))
+        <div class="row">
+            <!-- Hasil Shodan di kiri -->
+            <div class="col-md-6">
+                <div class="card mt-5">
+                    <div class="card-header">
+                        <h5>Ringkasan Hasil Shodan</h5>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-bordered">
+                            <tr>
+                                <th>IP Address</th>
+                                <td>{{ $data['ip'] }}</td>
+                            </tr>
+                            <tr>
+                                <th>OS</th>
+                                <td>{{ $data['os'] ?? 'N/A' }}</td>
+                            </tr>
+                            <tr>
+                                <th>ISP</th>
+                                <td>{{ $data['isp'] ?? 'N/A' }}</td>
+                            </tr>
+                        </table>
+
+                        <h5 class="mt-4">Kerentanan Ditemukan (CVE):</h5>
+                        @if(!empty($data['cve_details']))
+                        <table class="table table-bordered mt-3">
+                            <thead>
+                                <tr>
+                                    <th>CVE</th>
+                                    <th>Deskripsi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($data['cve_details'] as $cve => $description)
+                                <tr>
+                                    <td>{{ $cve }}</td>
+                                    <td>{{ $description }}</td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                        @else
+                        <p class="text-danger mt-4">Tidak ada kerentanan yang ditemukan.</p>
+                        @endif
+                    </div>
                 </div>
-                <div class="card-body">
-                    <canvas id="scanStatsChart"></canvas>
+            </div>
+
+            <!-- Hasil VirusTotal di kanan -->
+            <div class="col-md-6">
+                <div class="card shadow mt-5">
+                    <div class="card-header bg-warning text-dark">
+                        <h5 class="mb-0">
+                            Ringkasan Hasil Pemindaian VirusTotal
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="cve-item">Parameter</th>
+                                    <th class="cve-item">Nilai</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th class="cve-item">Community Score</th>
+                                    <td class="cve-item">{{ $data['virus_total']['community_score'] ?? 'N/A' }}</td>
+                                </tr>
+                                <tr>
+                                    <th class="cve-item">Tanggal Analisis Terakhir</th>
+                                    <td class="cve-item">{{ $data['virus_total']['last_analysis_date'] ?? 'N/A' }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <h5 class="cve-item mt-4">Detail Analisis Vendor Keamanan:</h5>
+                        @if(!empty($data['virus_total']['last_analysis_results']))
+                        <table class="table table-bordered mt-3">
+                            <thead>
+                                <tr>
+                                    <th class="cve-item">Vendor</th>
+                                    <th class="cve-item">Hasil Analisis</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($data['virus_total']['last_analysis_results'] as $vendor => $result)
+                                <tr>
+                                    <td class="cve-item">{{ $vendor }}</td>
+                                    <td class="cve-item">
+                                        @if($result['category'] == 'malicious')
+                                            <span class="badge cve-item" style="background-color: red; color: white;">Malicious</span>
+                                        @elseif($result['category'] == 'clean')
+                                            <span class="badge cve-item" style="background-color: green; color: white;">Clean</span>
+                                        @else
+                                            <span class="badge cve-item" style="background-color: gray; color: white;">Unrated</span>
+                                        @endif
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                        @else
+                        <p class="text-danger cve-item">Tidak ada data analisis vendor keamanan.</p>
+                        @endif
+                    </div>
                 </div>
             </div>
         </div>
@@ -211,7 +243,6 @@
 @if(!empty($data['chart_data']))
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    // Chart.js Script
     var ctx = document.getElementById('scanStatsChart').getContext('2d');
     var chartData = {
         labels: ['Port Terbuka', 'Jumlah CVE', 'Malicious Score (VirusTotal)'],
@@ -237,12 +268,21 @@
     };
 
     var scanStatsChart = new Chart(ctx, {
-        type: 'bar',
+        type: 'pie',
         data: chartData,
         options: {
-            scales: {
-                y: {
-                    beginAtZero: true
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(tooltipItem) {
+                            return tooltipItem.label + ': ' + tooltipItem.raw;
+                        }
+                    }
                 }
             }
         }

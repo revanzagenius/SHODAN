@@ -35,36 +35,43 @@ class ScanController extends Controller
             $response = $this->client->get("https://api.shodan.io/shodan/host/$ip?key={$this->shodanApiKey}");
             $result = json_decode($response->getBody(), true);
 
-            // Ambil data yang diperlukan dari hasil
             $data = [
                 'ip' => $result['ip_str'] ?? 'N/A',
                 'os' => $result['os'] ?? 'N/A',
                 'isp' => $result['isp'] ?? 'N/A',
                 'org' => $result['org'] ?? 'N/A',
-                'ports' => $result['ports'] ?? [], // Simpan sebagai array
-                'vulns' => $result['vulns'] ?? [], // Daftar CVE
-                'latitude' => $result['latitude'] ?? null, // Tambahkan latitude
-                'longitude' => $result['longitude'] ?? null, // Tambahkan longitude
+                'ports' => $result['ports'] ?? [],
+                'vulns' => $result['vulns'] ?? [],
+                'latitude' => $result['latitude'] ?? null,
+                'longitude' => $result['longitude'] ?? null,
             ];
         } catch (RequestException $e) {
-            // Tangani kesalahan jika permintaan ke Shodan gagal
             return redirect()->back()->withErrors(['error' => 'Gagal mengambil data dari Shodan: ' . $e->getMessage()]);
         }
 
+        // Ambil detail CVE
         $data['cve_details'] = [];
         foreach ($data['vulns'] as $cve) {
             try {
-                // Ambil deskripsi CVE dari API Circle.LU
+                // Ambil data dari Circle.LU
                 $cveResponse = $this->client->get("https://cve.circl.lu/api/cve/$cve");
                 $cveData = json_decode($cveResponse->getBody(), true);
-                $data['cve_details'][$cve] = $cveData['summary'] ?? 'Tidak ada deskripsi';
+
+                // Pastikan deskripsi tersedia
+                if (!empty($cveData['containers']['cna']['descriptions'])) {
+                    $descriptions = $cveData['containers']['cna']['descriptions'];
+                    $description = collect($descriptions)->firstWhere('lang', 'en')['value'] ?? 'Deskripsi tidak tersedia';
+                } else {
+                    $description = 'Deskripsi tidak tersedia';
+                }
+
+                $data['cve_details'][$cve] = $description;
             } catch (RequestException $e) {
                 $data['cve_details'][$cve] = 'Gagal mengambil data CVE: ' . $e->getMessage();
             }
         }
 
-
-        // Mengambil hasil pemindaian dari VirusTotal
+        // Integrasi VirusTotal
         try {
             $virusTotalResponse = $this->client->get("https://www.virustotal.com/api/v3/ip_addresses/$ip", [
                 'headers' => [
@@ -84,7 +91,7 @@ class ScanController extends Controller
             $data['virus_total'] = 'Gagal mengambil data dari VirusTotal: ' . $e->getMessage();
         }
 
-        // Mengambil hasil pemindaian dari OTX
+        // Integrasi OTX
         try {
             $otxResponse = $this->client->get("https://otx.alienvault.com/api/v1/indicators/IPv4/{$ip}", [
                 'headers' => [
@@ -102,9 +109,9 @@ class ScanController extends Controller
 
         // Data statistik untuk Chart.js
         $data['chart_data'] = [
-            'ports_open' => count($data['ports']), // Jumlah port terbuka
-            'cve_count' => count($data['vulns']),  // Jumlah CVE ditemukan
-            'malicious_count' => $data['virus_total']['community_score'] ?? 0, // Skor VirusTotal
+            'ports_open' => count($data['ports']),
+            'cve_count' => count($data['vulns']),
+            'malicious_count' => $data['virus_total']['community_score'] ?? 0,
         ];
 
         return view('scanner', compact('data'));
