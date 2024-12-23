@@ -91,7 +91,7 @@ class ScanController extends Controller
             $data['virus_total'] = 'Gagal mengambil data dari VirusTotal: ' . $e->getMessage();
         }
 
-        // Integrasi OTX
+      // Integrasi OTX
         try {
             $otxResponse = $this->client->get("https://otx.alienvault.com/api/v1/indicators/IPv4/{$ip}", [
                 'headers' => [
@@ -100,8 +100,14 @@ class ScanController extends Controller
             ]);
 
             $otxResult = json_decode($otxResponse->getBody(), true);
+
+            // Menyimpan lebih banyak informasi
             $data['otx'] = [
                 'threat_level' => $otxResult['pulse_info']['threat_level'] ?? 'Tidak tersedia',
+                'description' => $otxResult['pulse_info']['description'] ?? 'Tidak tersedia',
+                'pulse_count' => $otxResult['pulse_info']['pulse_count'] ?? 'Tidak tersedia',
+                'first_seen' => $otxResult['pulse_info']['first_seen'] ?? 'Tidak tersedia',
+                'last_seen' => $otxResult['pulse_info']['last_seen'] ?? 'Tidak tersedia',
             ];
         } catch (RequestException $e) {
             $data['otx'] = 'Gagal mengambil data dari OTX: ' . $e->getMessage();

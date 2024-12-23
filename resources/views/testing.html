@@ -1,0 +1,3207 @@
+<!DOCTYPE html>
+<html lang="en" prefix="og: http://ogp.me/ns#">
+ <head>
+  <title>
+   Lumma Stealer Malware Analysis, Overview by ANY.RUN
+  </title>
+  <meta content="Lumma is an information stealer that targets cryptocurrency wallets, login credentials, and other sensitive data." name="description"/>
+  <meta content="2023-11-16T06:18:00+00:00" property="article:published_time">
+   <meta content="Lumma" property="article:section"/>
+   <meta content="Lumma" property="article:tag"/>
+   <!-- Open Graph data -->
+   <meta content="Lumma | Malware Trends Tracker" property="og:title"/>
+   <meta content="https://any.run/malware-trends/lumma" property="og:url"/>
+   <meta content="article" property="og:type"/>
+   <meta content="Lumma is an information stealer that targets cryptocurrency wallets, login credentials, and other sensitive data." property="og:description"/>
+   <meta content="en_US" property="og:locale"/>
+   <meta content="Lumma | Malware Trends Tracker" property="og:site_name">
+    <!-- Twitter Card -->
+    <meta content="summary" name="twitter:card"/>
+    <meta content="Lumma | Malware Trends Tracker" name="twitter:title"/>
+    <meta content="Lumma is an information stealer that targets cryptocurrency wallets, login credentials, and other sensitive data." name="twitter:description"/>
+    <meta content="https://any.run/malware-trends/lumma" name="twitter:url"/>
+    <meta content="https://any.run/malware-trends/img/twitter-ava.png" name="twitter:image"/>
+    <link href="https://any.run/malware-trends/lumma/" rel="canonical"/>
+    <meta content="width=device-width, initial-scale=1" name="viewport"/>
+    <meta content="#121224" name="theme-color"/>
+    <link href="https://any.run/img/favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+    <link as="style" href="/malware-trends/vendors/fontAwesome/css/all.min.css" rel="preload"/>
+    <link as="style" href="/malware-trends/vendors/css/bootstrap.min.css" rel="preload"/>
+    <link as="style" href="/malware-trends/vendors/css/cookieconsent.css" rel="preload"/>
+    <link as="style" href="/malware-trends/root/styles/css/fonts.css" rel="preload"/>
+    <link as="style" href="/malware-trends/root/styles/css/nav.css" rel="preload"/>
+    <link as="style" href="/malware-trends/styles/css/styles.css" rel="preload"/>
+    <link as="style" href="/malware-trends/root/styles/css/footer.css" rel="preload"/>
+    <link as="style" href="/malware-trends/root/styles/css/cookie-consent.css" rel="preload"/>
+    <link as="style" href="/malware-trends/root/styles/css/banner.css" rel="preload"/>
+    <link as="style" href="/malware-trends/root/styles/css/ti-lookup-banner.css" rel="preload"/>
+    <link as="style" href="/malware-trends/root/styles/css/spring-sale-banner.css" rel="preload"/>
+    <link as="style" href="/malware-trends/root/styles/css/safebrowsing-banner.css" rel="preload"/>
+    <link as="style" href="/malware-trends/root/styles/css/ti-webinar-banner.css" rel="preload"/>
+    <!-- Google Tag Manager -->
+    <script>
+     (function(w, d, s, l, i) {
+      w[l] = w[l] || [];
+      w[l].push({
+        'gtm.start': new Date().getTime(),
+        event: 'gtm.js'
+      });
+      var f = d.getElementsByTagName(s)[0],
+        j = d.createElement(s),
+        dl = l != 'dataLayer' ? '&l=' + l : '';
+      j.async = true;
+      j.src = 'https://analytics.any.run/gtm.js?id=' + i + dl;
+      f.parentNode.insertBefore(j, f);
+    })(window, document, 'script', 'dataLayer', 'GTM-TW8J3ZJ4');
+    </script>
+    <!-- End Google Tag Manager -->
+    <!-- Gartner -->
+    <script data-category="functional" defer="" type="text/plain">
+     !function(){let e=/complete|loaded|interactive/.test(document.readyState);if(e)return t();async function t(){let e=document.querySelector("#gartner-widget");if(!e)return;let t=500,n;async function i(){return new Promise(e=>{let t=document.createElement("script");t.onload=e,t.async=!0,t.src="https://www.gartner.com/reviews/public/Widget/js/widget.js",document.head.appendChild(t)})}function r(){e.style.removeProperty("display"),GartnerPI_Widget({size:"small",theme:"light",sourcingLink:"https://gtnr.io/NUhzRdElO",widget_id:"ZDAzOTI1ZjktNDlkMC00MDc5LTg3NmQtMmE3NzE0OTI1OTQ0",version:"2",container:e})}function l(){let i=e.querySelector("div > a > div"),d=i&&!i.innerHTML.length;d?(e.innerHTML="",r(),t+=100,n=setTimeout(l,t)):clearTimeout(n)}await i(),r(),n=setTimeout(l,t)}document.addEventListener("DOMContentLoaded",t)}();
+    </script>
+    <!-- G2 -->
+    <script data-category="analytics" type="text/plain">
+     !function(){let e=/complete|loaded|interactive/.test(document.readyState);if(e)return t();function t(){let e=document.querySelector("#g2-widget");if(!e)return;let t=e.querySelector("img");if(!t)return;let r=t.cloneNode(!0);r.src="https://www.g2.com/products/any-run/widgets/stars?color=white&amp;type=reviews",t.replaceWith(r)}document.addEventListener("DOMContentLoaded",t)}();
+    </script>
+    <!-- Youtube blocker -->
+    <script data-category="functional marketing" data-consent="consent" inversed="" type="text/plain">
+     !function(){let e=/loaded|complete|interactive/.test(document.readyState);if(e)return t();function t(){let e=document.querySelectorAll('iframe');for(let t of e){let n=t.getAttribute('src')||'',o=n.indexOf('youtube.com')>-1;if(!o)continue;let r=t.parentNode,a=document.createElement('p');a.textContent='There may be a YouTube video here. Unfortunately, functional and marketing cookies have not been accepted yet',t.remove(),r.append(a),r.style='display: flex;justify-content: center;align-items: center;text-align: center;',a.style='font-size: 13px;color: #848484;'}}document.addEventListener('DOMContentLoaded',t)}();
+    </script>
+    <style>
+     {
+      {
+        >glyphter
+      }
+    }
+    </style>
+    <!-- Growthbook -->
+    <script async="" data-api-host="https://api-gb.any.run" data-category="analytics" data-client-key="sdk-dNWkea9HOtrmtM5" data-decryption-key="QS8wDh7/x2gexjc69xnpHA==" src="https://cdn.jsdelivr.net/npm/@growthbook/growthbook/dist/bundles/auto.min.js" type="text/plain">
+    </script>
+   </meta>
+  </meta>
+ </head>
+ <body>
+  <!-- Google Tag Manager (noscript) -->
+  <noscript>
+   <iframe height="0" src="https://analytics.any.run/ns.html?id=GTM-TW8J3ZJ4" style="display:none;visibility:hidden" width="0">
+   </iframe>
+  </noscript>
+  <!-- End Google Tag Manager (noscript) -->
+  <div class="black-friday-banner" id="black-friday-banner">
+   <div class="content">
+    <span class="content_1">
+     Black friday
+    </span>
+    <span class="content_center">
+     <span class="content_2">
+      Up to 3 extra licenses FOR FREE
+     </span>
+     <span class="content_3">
+      <span class="plus">
+       +
+      </span>
+      Special offer for TI LOOKUP
+     </span>
+    </span>
+    <a href="https://app.any.run/plans" target="_blank">
+     Get it now
+    </a>
+   </div>
+   <span class="close">
+    <svg fill="none" height="24" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+     <path d="M17.8923 5.70997C17.5023 5.31997 16.8723 5.31997 16.4823 5.70997L11.5923 10.59L6.70226 5.69997C6.31226 5.30997 5.68226 5.30997 5.29226 5.69997C4.90226 6.08997 4.90226 6.71997 5.29226 7.10997L10.1823 12L5.29226 16.89C4.90226 17.28 4.90226 17.91 5.29226 18.3C5.68226 18.69 6.31226 18.69 6.70226 18.3L11.5923 13.41L16.4823 18.3C16.8723 18.69 17.5023 18.69 17.8923 18.3C18.2823 17.91 18.2823 17.28 17.8923 16.89L13.0023 12L17.8923 7.10997C18.2723 6.72997 18.2723 6.08997 17.8923 5.70997Z" fill="white">
+     </path>
+    </svg>
+   </span>
+  </div>
+  <header>
+   <nav class="navbar navbar-expand-lg navbar-fixed-top js-navbar" itemscope="itemscope" itemtype="http://www.schema.org/SiteNavigationElement">
+    <a aria-label="ANY.RUN Main Page" class="navbar-icon navbar-brand" href="/">
+     <svg class="logo" height="302.000000pt" preserveaspectratio="xMidYMid meet" version="1.0" viewbox="0 0 266.000000 302.000000" width="266.000000pt" xmlns="http://www.w3.org/2000/svg">
+      <g fill="#fff" stroke="none" transform="translate(0.000000,302.000000) scale(0.100000,-0.100000)">
+       <path d="M607 3006 c-22 -8 -50 -25 -64 -38 -56 -52 -53 9 -53 -1128 0 -577 3
+                      -1050 8 -1050 4 0 48 24 97 53 l90 53 3 947 c1 521 4 947 6 947 2 0 1692 -974
+                      1729 -997 5 -3 -30 -27 -77 -55 -48 -27 -84 -53 -81 -58 2 -4 46 -31 96 -60
+                      l92 -52 32 18 c94 50 140 89 159 135 27 67 16 129 -32 180 -26 26 -315 199
+                      -937 557 -495 286 -914 526 -930 535 -47 24 -96 28 -138 13z">
+       </path>
+       <path d="M123 2729 c-45 -13 -100 -71 -113 -118 -7 -27 -9 -384 -8 -1123 l3
+                      -1084 27 -41 c36 -55 104 -88 163 -80 34 5 253 127 947 528 497 286 904 522
+                      905 523 1 1 -43 28 -98 60 l-100 57 -816 -470 c-448 -259 -819 -471 -824 -471
+                      -5 0 -9 402 -9 1000 0 600 4 1000 9 1000 5 0 44 -20 85 -45 42 -25 79 -45 82
+                      -45 2 0 3 53 2 117 l-3 117 -83 43 c-84 44 -111 49 -169 32z">
+       </path>
+       <path d="M792 2293 l3 -117 818 -472 818 -472 -33 -20 c-65 -40 -1700 -982
+                      -1704 -982 -2 0 -4 45 -4 101 0 55 -4 99 -8 97 -4 -1 -49 -27 -100 -56 l-92
+                      -54 0 -94 c0 -105 10 -136 60 -178 45 -38 101 -52 149 -38 32 10 1731 983
+                      1871 1072 60 39 84 81 85 151 0 109 51 75 -935 644 -486 281 -894 516 -907
+                      523 l-24 13 3 -118z">
+       </path>
+      </g>
+     </svg>
+    </a>
+    <button class="navbar-toggler text-white js-toggle-button" data-target="#collapsingNavbarMd" data-toggle="collapse" type="button">
+     <span class="dark-blue-text">
+      <div class="navbar-toggler__burger">
+       <div class="navbar-toggler__burger-medium">
+        x
+       </div>
+      </div>
+     </span>
+    </button>
+    <div class="collapse navbar-collapse js-drop-list" id="collapsingNavbarMd">
+     <ul class="navbar-nav">
+      <li class="nav-link why_US">
+       <a href="https://any.run/why-us/" itemprop="url" style="display: none" target="_blank">
+        <span itemprop="name">
+         Why us
+        </span>
+       </a>
+       <a href="/why-us/" target="_blank">
+        Why us
+       </a>
+      </li>
+      <li class="nav-link">
+       <a href="https://app.any.run/" itemprop="url" style="display: none" target="_blank">
+        <span itemprop="name">
+         Service
+        </span>
+       </a>
+       <a href="https://app.any.run/" target="_blank">
+        Service
+       </a>
+      </li>
+      <li class="nav-link navContact active">
+       <a href="https://any.run/malware-trends" itemprop="url" style="display: none">
+        <span itemprop="name">
+         Tracker
+        </span>
+       </a>
+       <a href="/malware-trends/">
+        Tracker
+       </a>
+      </li>
+      <li class="nav-link liReports">
+       <a href="https://any.run/malware-reports/" itemprop="url" style="display: none" target="_blank">
+        <span itemprop="name">
+         Reports
+        </span>
+       </a>
+       <a href="/malware-reports/" target="_blank">
+        Reports
+       </a>
+      </li>
+      <li class="nav-link nav-dropdown js-nav-dropdown">
+       <div class="nav-dropdown__name">
+        <svg class="nav-dropdown__arrow" fill="none" stroke="currentColor" stroke-width="3" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+         <path d="M19.5 8.25l-7.5 7.5-7.5-7.5" stroke-linecap="round" stroke-linejoin="round">
+         </path>
+        </svg>
+        <span>
+         products
+        </span>
+       </div>
+       <div class="nav-dropdown__container js-nav-dropdown-container">
+        <div class="nav-link nav-link_dropdown">
+         <a href="https://any.run/features/" itemprop="url" style="display: none" target="_blank">
+          <span itemprop="name">
+           sandbox
+          </span>
+         </a>
+         <a href="/features/" target="_blank">
+          sandbox
+         </a>
+        </div>
+        <div class="nav-link nav-link_dropdown">
+         <a href="https://any.run/threat-intelligence-lookup/" itemprop="url" style="display: none" target="_blank">
+          <span itemprop="name">
+           Threat intelligence
+          </span>
+         </a>
+         <a href="/threat-intelligence-lookup/" target="_blank">
+          Threat intelligence
+         </a>
+        </div>
+       </div>
+      </li>
+      <li class="nav-link">
+       <a href="https://any.run/integrations/" itemprop="url" style="display: none" target="_blank">
+        <span itemprop="name">
+         Integrations
+        </span>
+       </a>
+       <a href="/integrations/" target="_blank">
+        Integrations
+       </a>
+      </li>
+      <li class="nav-link nav-dropdown js-nav-dropdown">
+       <div class="nav-dropdown__name">
+        <svg class="nav-dropdown__arrow" fill="none" stroke="currentColor" stroke-width="3" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+         <path d="M19.5 8.25l-7.5 7.5-7.5-7.5" stroke-linecap="round" stroke-linejoin="round">
+         </path>
+        </svg>
+        <span>
+         pricing
+        </span>
+       </div>
+       <div class="nav-dropdown__container js-nav-dropdown-container">
+        <div class="nav-link nav-link_dropdown">
+         <a href="https://app.any.run/plans" itemprop="url" style="display: none" target="_blank">
+          <span itemprop="name">
+           sandbox
+          </span>
+         </a>
+         <a href="https://app.any.run/plans" target="_blank">
+          sandbox
+         </a>
+        </div>
+        <div class="nav-link nav-link_dropdown">
+         <a href="https://intelligence.any.run/plans" itemprop="url" style="display: none" target="_blank">
+          <span itemprop="name">
+           Threat Intelligence
+          </span>
+         </a>
+         <a href="https://intelligence.any.run/plans" target="_blank">
+          Threat Intelligence
+         </a>
+        </div>
+       </div>
+      </li>
+      <li class="nav-link">
+       <a href="https://any.run/cybersecurity-blog/" itemprop="url" style="display: none" target="_blank">
+        <span itemprop="name">
+         Blog
+        </span>
+       </a>
+       <a href="/cybersecurity-blog/" target="_blank">
+        Blog
+       </a>
+      </li>
+      <li class="nav-link navContact">
+       <a href="https://app.any.run/contact-us" itemprop="url" style="display: none" target="_blank">
+        <span itemprop="name">
+         Contacts
+        </span>
+       </a>
+       <a href="https://app.any.run/contact-us" target="_blank">
+        Contacts
+       </a>
+      </li>
+      <li class="nav-link">
+       <a href="https://any.run/media-kit/" itemprop="url" style="display: none" target="_blank">
+        <span itemprop="name">
+         Media Kit
+        </span>
+       </a>
+       <a href="/media-kit/" target="_blank">
+        Media Kit
+       </a>
+      </li>
+      <li class="nav-link">
+       <a href="https://any.run/demo" itemprop="url" style="display: none" target="_blank">
+        <span itemprop="name">
+         Trial
+        </span>
+       </a>
+       <a href="https://any.run/demo" target="_blank">
+        Trial
+       </a>
+      </li>
+     </ul>
+    </div>
+    <div class="hunt">
+     <a class="hunt__link js-hunt-link" href="https://app.any.run/#register" id="nav__btn" style="display: none;" target="_blank">
+      JOIN FOR FREE
+     </a>
+    </div>
+   </nav>
+  </header>
+  <section class="section-header">
+   <div class="container colored">
+    <div class="row row--title m-0">
+     <div class="col-md-12 col--shared p-0">
+      <div class="social--wrapper">
+       <!-- Sharing Twitter -->
+       <a aria-label="Share on Twitter" class="sharing__link" href="https://twitter.com/intent/tweet/?text=Learn%20more%20about%20%23lumma%2C%20get%20fresh%20malware%20analyses%20and%20IOCs.%20&amp;url=https%3A%2F%2Fany.run%2Fmalware-trends%2Flumma" rel="noopener" target="_blank">
+        <div class="sharing-button sharing-button--twitter">
+         <div aria-hidden="true" class="sharing__icon">
+          <svg version="1.1" viewbox="0 0 24 23" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+           <g fill="none" fill-rule="evenodd" stroke="none" stroke-width="1">
+            <g fill="#000000" fill-rule="nonzero">
+             <path d="M0.0585143588,0 L9.32464678,12.3896746 L0,22.463 L2.09860309,22.463 L10.2623154,13.6436543 L16.8583705,22.463 L24,22.463 L14.2125142,9.37643016 L22.8918244,0 L20.7932213,0 L13.2748456,8.12245044 L7.20014389,0 L0.0585143588,0 L0.0585143588,0 Z M3.14466716,1.54583158 L6.42554807,1.54583158 L20.9133676,20.9169286 L17.6324867,20.9169286 L3.14466716,1.54583158 Z">
+             </path>
+            </g>
+           </g>
+          </svg>
+         </div>
+        </div>
+       </a>
+       <!-- Sharing LinkedIn -->
+       <a aria-label="Share on LinkedIn" class="sharing__link" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3A%2F%2Fany.run%2Fmalware-trends%2Flumma&amp;title=Learn%20more%20about%20%23lumma%2C%20get%20fresh%20malware%20analyses%20and%20IOCs.%20&amp;summary=Learn%20more%20about%20%23malware%2C%20get%20fresh%20malware%20analyses%20and%20IOCs.%20&amp;source=https%3A%2F%2Fany.run%2Fmalware-trends%2Flumma" rel="noopener" target="_blank">
+        <div class="sharing-button sharing-button--linkedin">
+         <div aria-hidden="true" class="sharing__icon">
+          <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+           <path d="M6.5 21.5h-5v-13h5v13zM4 6.5C2.5 6.5 1.5 5.3 1.5 4s1-2.4 2.5-2.4c1.6 0 2.5 1 2.6 2.5 0 1.4-1 2.5-2.6 2.5zm11.5 6c-1 0-2 1-2 2v7h-5v-13h5V10s1.6-1.5 4-1.5c3 0 5 2.2 5 6.3v6.7h-5v-7c0-1-1-2-2-2z">
+           </path>
+          </svg>
+         </div>
+        </div>
+       </a>
+       <!-- Sharing Reddit -->
+       <a aria-label="Share on Reddit" class="sharing__link" href="https://reddit.com/submit/?url=https%3A%2F%2Fany.run%2Fmalware-trends%2Flumma&amp;resubmit=true&amp;title=Learn%20more%20about%20%23lumma%2C%20get%20fresh%20malware%20analyses%20and%20IOCs.%20" rel="noopener" target="_blank">
+        <div class="sharing-button sharing-button--reddit">
+         <div aria-hidden="true" class="sharing__icon">
+          <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+           <path d="M24 11.5c0-1.65-1.35-3-3-3-.96 0-1.86.48-2.42 1.24-1.64-1-3.75-1.64-6.07-1.72.08-1.1.4-3.05 1.52-3.7.72-.4 1.73-.24 3 .5C17.2 6.3 18.46 7.5 20 7.5c1.65 0 3-1.35 3-3s-1.35-3-3-3c-1.38 0-2.54.94-2.88 2.22-1.43-.72-2.64-.8-3.6-.25-1.64.94-1.95 3.47-2 4.55-2.33.08-4.45.7-6.1 1.72C4.86 8.98 3.96 8.5 3 8.5c-1.65 0-3 1.35-3 3 0 1.32.84 2.44 2.05 2.84-.03.22-.05.44-.05.66 0 3.86 4.5 7 10 7s10-3.14 10-7c0-.22-.02-.44-.05-.66 1.2-.4 2.05-1.54 2.05-2.84zM2.3 13.37C1.5 13.07 1 12.35 1 11.5c0-1.1.9-2 2-2 .64 0 1.22.32 1.6.82-1.1.85-1.92 1.9-2.3 3.05zm3.7.13c0-1.1.9-2 2-2s2 .9 2 2-.9 2-2 2-2-.9-2-2zm9.8 4.8c-1.08.63-2.42.96-3.8.96-1.4 0-2.74-.34-3.8-.95-.24-.13-.32-.44-.2-.68.15-.24.46-.32.7-.18 1.83 1.06 4.76 1.06 6.6 0 .23-.13.53-.05.67.2.14.23.06.54-.18.67zm.2-2.8c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm5.7-2.13c-.38-1.16-1.2-2.2-2.3-3.05.38-.5.97-.82 1.6-.82 1.1 0 2 .9 2 2 0 .84-.53 1.57-1.3 1.87z">
+           </path>
+          </svg>
+         </div>
+        </div>
+       </a>
+      </div>
+     </div>
+     <div class="col-md-12 col--shared titlewithInfographics">
+      <div class="col-md-6 pl-0">
+       <h1 class="title dot-success">
+        Lumma
+       </h1>
+       <div class="row row--tags m-0">
+        <div class="col-md-12 row--tags">
+         <div class="tags">
+          <a href="https://app.any.run/submissions/#tag:lumma" target="_blank">
+           <span class="badge badge-danger">
+            lumma
+           </span>
+          </a>
+         </div>
+        </div>
+       </div>
+      </div>
+      <div class="col-md-6 row row--infographics_new">
+       <div class="col-6 col-lg-3 infographic">
+        <div class="inforgraphic__value">
+         16
+        </div>
+        <div class="infographic__title">
+         Global rank
+        </div>
+       </div>
+       <div class="col-6 col-lg-3 infographic item">
+        <div class="inforgraphic__value d-flex">
+         1
+         <img alt="infographic chevron month" class="infographic__chevron" src="/malware-trends/img/Combined-Shape-Up.svg"/>
+        </div>
+        <div class="infographic__title">
+         Month rank
+        </div>
+       </div>
+       <div class="col-6 col-lg-3 infographic third">
+        <div class="inforgraphic__value d-flex">
+         1
+        </div>
+        <div class="infographic__title">
+         Week rank
+        </div>
+       </div>
+       <div class="col-6 col-lg-3 infographic item">
+        <div class="inforgraphic__value">
+         0
+        </div>
+        <div class="infographic__title">
+         IOCs
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+    <hr class="devider"/>
+    <div class="row row--description">
+     <div class="col-lg-6 col-md-12">
+      <p class="description">
+       Lumma is an information stealer, developed using the C programming language. It is offered for sale as a malware-as-a-service, with several plans available. It usually targets cryptocurrency wallets, login credentials, and other sensitive information on a compromised system. The malicious software regularly gets updates that improve and expand its functionality, making it a serious stealer threat.
+      </p>
+      <div class="row row--facts mobile">
+       <div class="col">
+        <table>
+         <tbody>
+          <tr>
+           <td class="fact">
+            <div class="fact__value">
+             <i class="fas fa-puzzle-piece">
+             </i>
+             Stealer
+            </div>
+            <div class="fact__title">
+             Type
+             <div class="hidden">
+              :
+             </div>
+            </div>
+           </td>
+           <td class="fact">
+            <div class="fact__value">
+             <i class="fas fa-map-marker-alt">
+             </i>
+             ex-USSR
+            </div>
+            <div class="fact__title">
+             Origin
+             <div class="hidden">
+              :
+             </div>
+            </div>
+           </td>
+          </tr>
+          <tr>
+           <td class="fact">
+            <div class="fact__value">
+             <i class="fas fa-calendar-alt">
+             </i>
+             1 August, 2022
+            </div>
+            <div class="fact__title">
+             First seen
+             <div class="hidden">
+              :
+             </div>
+            </div>
+           </td>
+           <td class="fact">
+            <div class="fact__value">
+             <i class="fas fa-clock">
+             </i>
+             20 December, 2024
+            </div>
+            <div class="fact__title">
+             Last seen
+             <div class="hidden">
+              :
+             </div>
+            </div>
+           </td>
+          </tr>
+         </tbody>
+        </table>
+       </div>
+      </div>
+      <div class="knownAs">
+       <div class="knownAs__title">
+        Also known as
+       </div>
+       <div class="knownAs__content">
+        <div>
+         <div>
+          Lumma Stealer
+         </div>
+         <div>
+          LummaC2 Stealer
+         </div>
+        </div>
+       </div>
+      </div>
+      <div class="video-wrapper">
+       <h1 class="video-wrapper__title">
+        How to analyze Lumma with ANY.RUN
+       </h1>
+       <video controls="" poster="/malware-trends/img/video_preview.png" preload="none" src="https://content.any.run/tasks/20a99057-6518-4354-90fe-3857d0a583c8/download/mp4">
+       </video>
+      </div>
+     </div>
+     <div class="col-lg-6 col-md-12">
+      <div class="row row--facts">
+       <table>
+        <tbody>
+         <tr>
+          <td class="fact">
+           <div class="fact__value">
+            <i class="fas fa-puzzle-piece">
+            </i>
+            <a href="/malware-trends/stealer">
+             Stealer
+            </a>
+           </div>
+           <div class="fact__title">
+            Type
+            <div class="hidden">
+             :
+            </div>
+           </div>
+          </td>
+          <td class="fact">
+           <div class="fact__value">
+            <i class="fas fa-map-marker-alt">
+            </i>
+            ex-USSR
+           </div>
+           <div class="fact__title">
+            Origin
+            <div class="hidden">
+             :
+            </div>
+           </div>
+          </td>
+         </tr>
+         <tr>
+          <td class="fact">
+           <div class="fact__value">
+            <i class="fas fa-calendar-alt">
+            </i>
+            1 August, 2022
+           </div>
+           <div class="fact__title">
+            First seen
+            <div class="hidden">
+             :
+            </div>
+           </div>
+          </td>
+          <td class="fact">
+           <div class="fact__value">
+            <i class="fas fa-clock">
+            </i>
+            20 December, 2024
+           </div>
+           <div class="fact__title">
+            Last seen
+            <div class="hidden">
+             :
+            </div>
+           </div>
+          </td>
+         </tr>
+        </tbody>
+       </table>
+      </div>
+      <div class="row row--additionalDatas">
+       <div class="additionalDatas">
+        <h3>
+         IOCs
+        </h3>
+        <div class="additionalData__title">
+         IP addresses
+        </div>
+        <div class="additionalData" id="ipData">
+         <div class="additionalData__content">
+          <div class="additionalData__list">
+           <div class="list__item">
+            94.158.244.69
+           </div>
+           <div class="list__item">
+            185.99.133.246
+           </div>
+           <div class="list__item">
+            144.76.173.247
+           </div>
+           <div class="list__item">
+            195.123.226.167
+           </div>
+           <div class="list__item">
+            195.123.227.138
+           </div>
+           <div class="list__item">
+            195.123.226.91
+           </div>
+           <div class="list__item">
+            82.117.255.80
+           </div>
+           <div class="list__item">
+            77.73.134.68
+           </div>
+           <div class="list__item">
+            217.12.206.230
+           </div>
+           <div class="list__item">
+            82.118.23.50
+           </div>
+           <div class="list__item">
+            45.9.74.78
+           </div>
+          </div>
+         </div>
+        </div>
+        <div class="additionalData__title">
+         Domains
+        </div>
+        <div class="additionalData" id="domainData">
+         <div class="additionalData__content">
+          <div class="additionalData__list">
+           <div class="list__item">
+            immureprech.biz
+           </div>
+           <div class="list__item">
+            deafeninggeh.biz
+           </div>
+           <div class="list__item">
+            diffuculttan.xyz
+           </div>
+           <div class="list__item">
+            ingreem-eilish.biz
+           </div>
+           <div class="list__item">
+            effecterectz.xyz
+           </div>
+           <div class="list__item">
+            awake-weaves.cyou
+           </div>
+           <div class="list__item">
+            debonairnukk.xyz
+           </div>
+           <div class="list__item">
+            wrathful-jammy.cyou
+           </div>
+           <div class="list__item">
+            sordid-snaked.cyou
+           </div>
+           <div class="list__item">
+            fightlsoser.click
+           </div>
+           <div class="list__item">
+            covery-mover.biz
+           </div>
+           <div class="list__item">
+            se-blurry.biz
+           </div>
+           <div class="list__item">
+            zinc-sneark.biz
+           </div>
+           <div class="list__item">
+            formy-spill.biz
+           </div>
+           <div class="list__item">
+            impend-differ.biz
+           </div>
+           <div class="list__item">
+            print-vexer.biz
+           </div>
+           <div class="list__item">
+            dare-curbys.biz
+           </div>
+           <div class="list__item">
+            dwell-exclaim.biz
+           </div>
+           <div class="list__item">
+            jonagye.shop
+           </div>
+           <div class="list__item">
+            indexterityszcoxp.shop
+           </div>
+          </div>
+         </div>
+        </div>
+        <div class="additionalData__title">
+         URLs
+        </div>
+        <div class="additionalData" id="urlData">
+         <div class="additionalData__content">
+          <div class="additionalData__list">
+           <div class="list__item">
+            http://185.99.133.246/c2sock
+           </div>
+           <div class="list__item">
+            http://195.123.226.91/c2sock
+           </div>
+           <div class="list__item">
+            http://gstatic-node.io/c2sock
+           </div>
+           <div class="list__item">
+            http://winhttp.dll/c2sock
+           </div>
+           <div class="list__item">
+            http://82.117.255.80/c2sock
+           </div>
+           <div class="list__item">
+            http://aloowforest.xyz/c2sock
+           </div>
+           <div class="list__item">
+            http://speedtestip.xyz/c2sock
+           </div>
+           <div class="list__item">
+            http://stoppublick.xyz/c2sock
+           </div>
+           <div class="list__item">
+            http://many-verses.xyz/c2sock
+           </div>
+           <div class="list__item">
+            http://worldofpoetry.xyz/c2sock
+           </div>
+           <div class="list__item">
+            http://crazypictures.xyz/c2sock
+           </div>
+           <div class="list__item">
+            http://skicloud-my.xyz/c2sock
+           </div>
+           <div class="list__item">
+            http://solopodvip-my.xyz/c2sock
+           </div>
+           <div class="list__item">
+            http://clonecloud-my.xyz/c2sock
+           </div>
+           <div class="list__item">
+            http://2flowers-my.xyz/c2sock
+           </div>
+           <div class="list__item">
+            http://vipcloud-my.xyz/c2sock
+           </div>
+           <div class="list__item">
+            http://agustfreeday-my.xyz/c2sock
+           </div>
+           <div class="list__item">
+            http://gservice-node.io/c2sock
+           </div>
+           <div class="list__item">
+            http://195.123.227.138/c2sock
+           </div>
+           <div class="list__item">
+            http://flowers-my.xyz/c2sock
+           </div>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+    <div class="publicSubmissions">
+     <div class="publicSubmissions__title">
+      Last Seen at
+     </div>
+     <div class="publicSubmissions__content" id="publicSubmissions__content">
+      <div class="task">
+       <a class="task__link" href="https://app.any.run/tasks/1f17911a-c18a-4d74-861a-d063e1602d3c" target="_blank">
+        <div class="task__date">
+         20 December, 2024
+        </div>
+        <div class="task__verdict">
+         <div class="badge badge-danger">
+          Malicious activity
+         </div>
+        </div>
+        <div class="task__name">
+         f3e3c4115bd289a528c02aae90a563e6b5dd6009e125d1fb142bcc7218cf068d.exe
+        </div>
+        <div class="task__indicators">
+         <i class="icon icon-18">
+         </i>
+         <i class="icon icon-11">
+         </i>
+         <i class="icon icon-10">
+         </i>
+         <i class="icon icon-9">
+         </i>
+         <i class="icon icon-7">
+         </i>
+         <i class="icon icon-6">
+         </i>
+         <i class="icon icon-5">
+         </i>
+         <i class="icon icon-4">
+         </i>
+         <i class="icon icon-2">
+         </i>
+        </div>
+       </a>
+       <div class="task__tags ml-auto">
+        <div class="badge badge-primary">
+         <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:amadey" target="_blank">
+          amadey
+         </a>
+        </div>
+        <div class="badge badge-primary">
+         <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:botnet" target="_blank">
+          botnet
+         </a>
+        </div>
+        <div class="badge badge-primary">
+         <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:stealer" target="_blank">
+          stealer
+         </a>
+        </div>
+        <div class="badge badge-primary">
+         <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:loader" target="_blank">
+          loader
+         </a>
+        </div>
+        <div class="badge badge-primary">
+         <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:lumma" target="_blank">
+          lumma
+         </a>
+        </div>
+        <div class="badge badge-primary">
+         <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:themida" target="_blank">
+          themida
+         </a>
+        </div>
+        <div class="badge badge-primary">
+         <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:cryptbot" target="_blank">
+          cryptbot
+         </a>
+        </div>
+        <div class="badge badge-primary">
+         <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:antivm" target="_blank">
+          antivm
+         </a>
+        </div>
+        <div class="badge badge-primary">
+         <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:github" target="_blank">
+          github
+         </a>
+        </div>
+        <div class="badge badge-primary">
+         <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:telegram" target="_blank">
+          telegram
+         </a>
+        </div>
+        <div class="badge badge-primary">
+         <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:gcleaner" target="_blank">
+          gcleaner
+         </a>
+        </div>
+        <div class="badge badge-primary">
+         <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:stealc" target="_blank">
+          stealc
+         </a>
+        </div>
+       </div>
+      </div>
+      <div class="task">
+       <a class="task__link" href="https://app.any.run/tasks/474ce0b4-a04b-407b-9265-310399cc5ddd" target="_blank">
+        <div class="task__date">
+         20 December, 2024
+        </div>
+        <div class="task__verdict">
+         <div class="badge badge-danger">
+          Malicious activity
+         </div>
+        </div>
+        <div class="task__name">
+         file
+        </div>
+        <div class="task__indicators">
+         <i class="icon icon-18">
+         </i>
+         <i class="icon icon-11">
+         </i>
+         <i class="icon icon-10">
+         </i>
+         <i class="icon icon-9">
+         </i>
+         <i class="icon icon-7">
+         </i>
+         <i class="icon icon-6">
+         </i>
+         <i class="icon icon-5">
+         </i>
+         <i class="icon icon-4">
+         </i>
+         <i class="icon icon-2">
+         </i>
+        </div>
+       </a>
+       <div class="task__tags ml-auto">
+        <div class="badge badge-primary">
+         <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:amadey" target="_blank">
+          amadey
+         </a>
+        </div>
+        <div class="badge badge-primary">
+         <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:botnet" target="_blank">
+          botnet
+         </a>
+        </div>
+        <div class="badge badge-primary">
+         <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:stealer" target="_blank">
+          stealer
+         </a>
+        </div>
+        <div class="badge badge-primary">
+         <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:loader" target="_blank">
+          loader
+         </a>
+        </div>
+        <div class="badge badge-primary">
+         <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:rhadamanthys" target="_blank">
+          rhadamanthys
+         </a>
+        </div>
+        <div class="badge badge-primary">
+         <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:themida" target="_blank">
+          themida
+         </a>
+        </div>
+        <div class="badge badge-primary">
+         <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:lumma" target="_blank">
+          lumma
+         </a>
+        </div>
+        <div class="badge badge-primary">
+         <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:github" target="_blank">
+          github
+         </a>
+        </div>
+        <div class="badge badge-primary">
+         <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:cryptbot" target="_blank">
+          cryptbot
+         </a>
+        </div>
+        <div class="badge badge-primary">
+         <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:netreactor" target="_blank">
+          netreactor
+         </a>
+        </div>
+        <div class="badge badge-primary">
+         <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:telegram" target="_blank">
+          telegram
+         </a>
+        </div>
+        <div class="badge badge-primary">
+         <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:stealc" target="_blank">
+          stealc
+         </a>
+        </div>
+        <div class="badge badge-primary">
+         <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:gcleaner" target="_blank">
+          gcleaner
+         </a>
+        </div>
+        <div class="badge badge-primary">
+         <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:credentialflusher" target="_blank">
+          credentialflusher
+         </a>
+        </div>
+        <div class="badge badge-primary">
+         <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:auto" target="_blank">
+          auto
+         </a>
+        </div>
+        <div class="badge badge-primary">
+         <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:coinminer" target="_blank">
+          coinminer
+         </a>
+        </div>
+        <div class="badge badge-primary">
+         <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:arch-exec" target="_blank">
+          arch-exec
+         </a>
+        </div>
+       </div>
+      </div>
+      <div class="task">
+       <a class="task__link" href="https://app.any.run/tasks/e5f4aedc-5c24-4f73-80be-e02aecec05d5" target="_blank">
+        <div class="task__date">
+         20 December, 2024
+        </div>
+        <div class="task__verdict">
+         <div class="badge badge-danger">
+          Malicious activity
+         </div>
+        </div>
+        <div class="task__name">
+         YuQuLoaderyuqu.zip
+        </div>
+        <div class="task__indicators">
+         <i class="icon icon-11">
+         </i>
+         <i class="icon icon-9">
+         </i>
+         <i class="icon icon-6">
+         </i>
+         <i class="icon icon-5">
+         </i>
+        </div>
+       </a>
+       <div class="task__tags ml-auto">
+        <div class="badge badge-primary">
+         <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:arch-exec" target="_blank">
+          arch-exec
+         </a>
+        </div>
+        <div class="badge badge-primary">
+         <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:lumma" target="_blank">
+          lumma
+         </a>
+        </div>
+        <div class="badge badge-primary">
+         <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:stealer" target="_blank">
+          stealer
+         </a>
+        </div>
+        <div class="badge badge-primary">
+         <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:loader" target="_blank">
+          loader
+         </a>
+        </div>
+       </div>
+      </div>
+      <div class="task">
+       <a class="task__link" href="https://app.any.run/tasks/d6b439b1-f5d7-4f37-a6a4-05456b07b065" target="_blank">
+        <div class="task__date">
+         20 December, 2024
+        </div>
+        <div class="task__verdict">
+         <div class="badge badge-danger">
+          Malicious activity
+         </div>
+        </div>
+        <div class="task__name">
+         SlimMajority7474.zip
+        </div>
+        <div class="task__indicators">
+         <i class="icon icon-11">
+         </i>
+         <i class="icon icon-9">
+         </i>
+         <i class="icon icon-6">
+         </i>
+         <i class="icon icon-5">
+         </i>
+        </div>
+       </a>
+       <div class="task__tags ml-auto">
+        <div class="badge badge-primary">
+         <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:arch-exec" target="_blank">
+          arch-exec
+         </a>
+        </div>
+        <div class="badge badge-primary">
+         <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:lumma" target="_blank">
+          lumma
+         </a>
+        </div>
+        <div class="badge badge-primary">
+         <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:stealer" target="_blank">
+          stealer
+         </a>
+        </div>
+       </div>
+      </div>
+      <div class="task">
+       <a class="task__link" href="https://app.any.run/tasks/f02a2637-3513-4cd4-a100-b9691bf49879" target="_blank">
+        <div class="task__date">
+         20 December, 2024
+        </div>
+        <div class="task__verdict">
+         <div class="badge badge-danger">
+          Malicious activity
+         </div>
+        </div>
+        <div class="task__name">
+         f02a2637-3513-4cd4-a100-b9691bf49879
+        </div>
+        <div class="task__indicators">
+         <i class="icon icon-11">
+         </i>
+         <i class="icon icon-6">
+         </i>
+         <i class="icon icon-5">
+         </i>
+        </div>
+       </a>
+       <div class="task__tags ml-auto">
+        <div class="badge badge-primary">
+         <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:stealer" target="_blank">
+          stealer
+         </a>
+        </div>
+        <div class="badge badge-primary">
+         <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:lumma" target="_blank">
+          lumma
+         </a>
+        </div>
+       </div>
+      </div>
+      <div class="task">
+       <a class="task__link" href="https://app.any.run/tasks/fcca18eb-9c10-408c-8883-2cea2acbdb25" target="_blank">
+        <div class="task__date">
+         20 December, 2024
+        </div>
+        <div class="task__verdict">
+         <div class="badge badge-danger">
+          Malicious activity
+         </div>
+        </div>
+        <div class="task__name">
+         Captcha.hta
+        </div>
+        <div class="task__indicators">
+         <i class="icon icon-11">
+         </i>
+         <i class="icon icon-10">
+         </i>
+         <i class="icon icon-9">
+         </i>
+         <i class="icon icon-6">
+         </i>
+         <i class="icon icon-5">
+         </i>
+        </div>
+       </a>
+       <div class="task__tags ml-auto">
+        <div class="badge badge-primary">
+         <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:loader" target="_blank">
+          loader
+         </a>
+        </div>
+        <div class="badge badge-primary">
+         <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:lumma" target="_blank">
+          lumma
+         </a>
+        </div>
+        <div class="badge badge-primary">
+         <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:stealer" target="_blank">
+          stealer
+         </a>
+        </div>
+       </div>
+      </div>
+      <div class="task">
+       <a class="task__link" href="https://app.any.run/tasks/fe66ced0-f305-4b58-ae8c-cd8063c78564" target="_blank">
+        <div class="task__date">
+         20 December, 2024
+        </div>
+        <div class="task__verdict">
+         <div class="badge badge-danger">
+          Malicious activity
+         </div>
+        </div>
+        <div class="task__name">
+         YK56F_file.exe
+        </div>
+        <div class="task__indicators">
+         <i class="icon icon-10">
+         </i>
+         <i class="icon icon-9">
+         </i>
+         <i class="icon icon-7">
+         </i>
+        </div>
+       </a>
+       <div class="task__tags ml-auto">
+        <div class="badge badge-primary">
+         <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:lumma" target="_blank">
+          lumma
+         </a>
+        </div>
+        <div class="badge badge-primary">
+         <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:stealer" target="_blank">
+          stealer
+         </a>
+        </div>
+        <div class="badge badge-primary">
+         <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:loader" target="_blank">
+          loader
+         </a>
+        </div>
+        <div class="badge badge-primary">
+         <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:themida" target="_blank">
+          themida
+         </a>
+        </div>
+       </div>
+      </div>
+      <div class="task">
+       <a class="task__link" href="https://app.any.run/tasks/1f912c13-dbb7-4386-a6a6-52c005e0e9b5" target="_blank">
+        <div class="task__date">
+         20 December, 2024
+        </div>
+        <div class="task__verdict">
+         <div class="badge badge-danger">
+          Malicious activity
+         </div>
+        </div>
+        <div class="task__name">
+         file
+        </div>
+        <div class="task__indicators">
+         <i class="icon icon-18">
+         </i>
+         <i class="icon icon-11">
+         </i>
+         <i class="icon icon-10">
+         </i>
+         <i class="icon icon-9">
+         </i>
+         <i class="icon icon-7">
+         </i>
+         <i class="icon icon-6">
+         </i>
+         <i class="icon icon-5">
+         </i>
+         <i class="icon icon-4">
+         </i>
+         <i class="icon icon-2">
+         </i>
+        </div>
+       </a>
+       <div class="task__tags ml-auto">
+        <div class="badge badge-primary">
+         <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:amadey" target="_blank">
+          amadey
+         </a>
+        </div>
+        <div class="badge badge-primary">
+         <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:botnet" target="_blank">
+          botnet
+         </a>
+        </div>
+        <div class="badge badge-primary">
+         <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:stealer" target="_blank">
+          stealer
+         </a>
+        </div>
+        <div class="badge badge-primary">
+         <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:loader" target="_blank">
+          loader
+         </a>
+        </div>
+        <div class="badge badge-primary">
+         <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:cryptbot" target="_blank">
+          cryptbot
+         </a>
+        </div>
+        <div class="badge badge-primary">
+         <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:lumma" target="_blank">
+          lumma
+         </a>
+        </div>
+        <div class="badge badge-primary">
+         <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:github" target="_blank">
+          github
+         </a>
+        </div>
+        <div class="badge badge-primary">
+         <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:telegram" target="_blank">
+          telegram
+         </a>
+        </div>
+        <div class="badge badge-primary">
+         <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:stealc" target="_blank">
+          stealc
+         </a>
+        </div>
+        <div class="badge badge-primary">
+         <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:gcleaner" target="_blank">
+          gcleaner
+         </a>
+        </div>
+        <div class="badge badge-primary">
+         <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:credentialflusher" target="_blank">
+          credentialflusher
+         </a>
+        </div>
+        <div class="badge badge-primary">
+         <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:themida" target="_blank">
+          themida
+         </a>
+        </div>
+       </div>
+      </div>
+      <div class="task">
+       <a class="task__link" href="https://app.any.run/tasks/b4d94b2a-41ed-40c4-8cd3-b9bde2076cf5" target="_blank">
+        <div class="task__date">
+         20 December, 2024
+        </div>
+        <div class="task__verdict">
+         <div class="badge badge-danger">
+          Malicious activity
+         </div>
+        </div>
+        <div class="task__name">
+         file.exe
+        </div>
+        <div class="task__indicators">
+         <i class="icon icon-18">
+         </i>
+         <i class="icon icon-11">
+         </i>
+         <i class="icon icon-10">
+         </i>
+         <i class="icon icon-9">
+         </i>
+         <i class="icon icon-7">
+         </i>
+         <i class="icon icon-6">
+         </i>
+         <i class="icon icon-5">
+         </i>
+         <i class="icon icon-2">
+         </i>
+        </div>
+       </a>
+       <div class="task__tags ml-auto">
+        <div class="badge badge-primary">
+         <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:amadey" target="_blank">
+          amadey
+         </a>
+        </div>
+        <div class="badge badge-primary">
+         <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:botnet" target="_blank">
+          botnet
+         </a>
+        </div>
+        <div class="badge badge-primary">
+         <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:stealer" target="_blank">
+          stealer
+         </a>
+        </div>
+        <div class="badge badge-primary">
+         <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:loader" target="_blank">
+          loader
+         </a>
+        </div>
+        <div class="badge badge-primary">
+         <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:lumma" target="_blank">
+          lumma
+         </a>
+        </div>
+        <div class="badge badge-primary">
+         <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:cryptbot" target="_blank">
+          cryptbot
+         </a>
+        </div>
+        <div class="badge badge-primary">
+         <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:github" target="_blank">
+          github
+         </a>
+        </div>
+        <div class="badge badge-primary">
+         <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:telegram" target="_blank">
+          telegram
+         </a>
+        </div>
+        <div class="badge badge-primary">
+         <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:gcleaner" target="_blank">
+          gcleaner
+         </a>
+        </div>
+        <div class="badge badge-primary">
+         <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:stealc" target="_blank">
+          stealc
+         </a>
+        </div>
+       </div>
+      </div>
+      <div class="task">
+       <a class="task__link" href="https://app.any.run/tasks/59ba4e8e-6fd9-489f-9720-e51e9bab514c" target="_blank">
+        <div class="task__date">
+         20 December, 2024
+        </div>
+        <div class="task__verdict">
+         <div class="badge badge-danger">
+          Malicious activity
+         </div>
+        </div>
+        <div class="task__name">
+         8ZVMneG.exe
+        </div>
+        <div class="task__indicators">
+         <i class="icon icon-11">
+         </i>
+         <i class="icon icon-9">
+         </i>
+         <i class="icon icon-5">
+         </i>
+        </div>
+       </a>
+       <div class="task__tags ml-auto">
+        <div class="badge badge-primary">
+         <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:lumma" target="_blank">
+          lumma
+         </a>
+        </div>
+        <div class="badge badge-primary">
+         <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:stealer" target="_blank">
+          stealer
+         </a>
+        </div>
+       </div>
+      </div>
+     </div>
+     <div class="publicSubmissions__footer">
+      <div class="description">
+       TRACK THEM ALL AT
+       <div class="arrows">
+        <i aria-hidden="true" class="fa fa-chevron-right">
+        </i>
+        <i aria-hidden="true" class="fa fa-chevron-right">
+        </i>
+        <i aria-hidden="true" class="fa fa-chevron-right">
+        </i>
+       </div>
+      </div>
+      <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:lumma" target="_blank">
+       Public Submissions
+      </a>
+     </div>
+    </div>
+   </div>
+  </section>
+  <div class="publicSubmissions mobile">
+   <div class="container publicSubmissions__title">
+    Last Seen at
+   </div>
+   <div class="publicSubmissions__content" id="publicSubmissions__content">
+    <div class="task">
+     <a class="task__link" href="https://app.any.run/tasks/1f17911a-c18a-4d74-861a-d063e1602d3c" target="_blank">
+      <div class="task__date">
+       20 December, 2024
+      </div>
+      <div class="task__verdict">
+       <div class="badge badge-danger">
+        Malicious activity
+       </div>
+      </div>
+      <div class="task__name">
+       f3e3c4115bd289a528c02aae90a563e6b5dd6009e125d1fb142bcc7218cf068d.exe
+      </div>
+      <div class="task__indicators">
+       <i class="icon icon-18">
+       </i>
+       <i class="icon icon-11">
+       </i>
+       <i class="icon icon-10">
+       </i>
+       <i class="icon icon-9">
+       </i>
+       <i class="icon icon-7">
+       </i>
+       <i class="icon icon-6">
+       </i>
+       <i class="icon icon-5">
+       </i>
+       <i class="icon icon-4">
+       </i>
+       <i class="icon icon-2">
+       </i>
+      </div>
+     </a>
+     <div class="task__tags ml-auto">
+      <div class="badge badge-primary">
+       <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:amadey" target="_blank">
+        amadey
+       </a>
+      </div>
+      <div class="badge badge-primary">
+       <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:botnet" target="_blank">
+        botnet
+       </a>
+      </div>
+      <div class="badge badge-primary">
+       <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:stealer" target="_blank">
+        stealer
+       </a>
+      </div>
+      <div class="badge badge-primary">
+       <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:loader" target="_blank">
+        loader
+       </a>
+      </div>
+      <div class="badge badge-primary">
+       <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:lumma" target="_blank">
+        lumma
+       </a>
+      </div>
+      <div class="badge badge-primary">
+       <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:themida" target="_blank">
+        themida
+       </a>
+      </div>
+      <div class="badge badge-primary">
+       <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:cryptbot" target="_blank">
+        cryptbot
+       </a>
+      </div>
+      <div class="badge badge-primary">
+       <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:antivm" target="_blank">
+        antivm
+       </a>
+      </div>
+      <div class="badge badge-primary">
+       <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:github" target="_blank">
+        github
+       </a>
+      </div>
+      <div class="badge badge-primary">
+       <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:telegram" target="_blank">
+        telegram
+       </a>
+      </div>
+      <div class="badge badge-primary">
+       <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:gcleaner" target="_blank">
+        gcleaner
+       </a>
+      </div>
+      <div class="badge badge-primary">
+       <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:stealc" target="_blank">
+        stealc
+       </a>
+      </div>
+     </div>
+    </div>
+    <div class="task">
+     <a class="task__link" href="https://app.any.run/tasks/474ce0b4-a04b-407b-9265-310399cc5ddd" target="_blank">
+      <div class="task__date">
+       20 December, 2024
+      </div>
+      <div class="task__verdict">
+       <div class="badge badge-danger">
+        Malicious activity
+       </div>
+      </div>
+      <div class="task__name">
+       file
+      </div>
+      <div class="task__indicators">
+       <i class="icon icon-18">
+       </i>
+       <i class="icon icon-11">
+       </i>
+       <i class="icon icon-10">
+       </i>
+       <i class="icon icon-9">
+       </i>
+       <i class="icon icon-7">
+       </i>
+       <i class="icon icon-6">
+       </i>
+       <i class="icon icon-5">
+       </i>
+       <i class="icon icon-4">
+       </i>
+       <i class="icon icon-2">
+       </i>
+      </div>
+     </a>
+     <div class="task__tags ml-auto">
+      <div class="badge badge-primary">
+       <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:amadey" target="_blank">
+        amadey
+       </a>
+      </div>
+      <div class="badge badge-primary">
+       <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:botnet" target="_blank">
+        botnet
+       </a>
+      </div>
+      <div class="badge badge-primary">
+       <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:stealer" target="_blank">
+        stealer
+       </a>
+      </div>
+      <div class="badge badge-primary">
+       <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:loader" target="_blank">
+        loader
+       </a>
+      </div>
+      <div class="badge badge-primary">
+       <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:rhadamanthys" target="_blank">
+        rhadamanthys
+       </a>
+      </div>
+      <div class="badge badge-primary">
+       <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:themida" target="_blank">
+        themida
+       </a>
+      </div>
+      <div class="badge badge-primary">
+       <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:lumma" target="_blank">
+        lumma
+       </a>
+      </div>
+      <div class="badge badge-primary">
+       <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:github" target="_blank">
+        github
+       </a>
+      </div>
+      <div class="badge badge-primary">
+       <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:cryptbot" target="_blank">
+        cryptbot
+       </a>
+      </div>
+      <div class="badge badge-primary">
+       <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:netreactor" target="_blank">
+        netreactor
+       </a>
+      </div>
+      <div class="badge badge-primary">
+       <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:telegram" target="_blank">
+        telegram
+       </a>
+      </div>
+      <div class="badge badge-primary">
+       <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:stealc" target="_blank">
+        stealc
+       </a>
+      </div>
+      <div class="badge badge-primary">
+       <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:gcleaner" target="_blank">
+        gcleaner
+       </a>
+      </div>
+      <div class="badge badge-primary">
+       <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:credentialflusher" target="_blank">
+        credentialflusher
+       </a>
+      </div>
+      <div class="badge badge-primary">
+       <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:auto" target="_blank">
+        auto
+       </a>
+      </div>
+      <div class="badge badge-primary">
+       <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:coinminer" target="_blank">
+        coinminer
+       </a>
+      </div>
+      <div class="badge badge-primary">
+       <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:arch-exec" target="_blank">
+        arch-exec
+       </a>
+      </div>
+     </div>
+    </div>
+    <div class="task">
+     <a class="task__link" href="https://app.any.run/tasks/e5f4aedc-5c24-4f73-80be-e02aecec05d5" target="_blank">
+      <div class="task__date">
+       20 December, 2024
+      </div>
+      <div class="task__verdict">
+       <div class="badge badge-danger">
+        Malicious activity
+       </div>
+      </div>
+      <div class="task__name">
+       YuQuLoaderyuqu.zip
+      </div>
+      <div class="task__indicators">
+       <i class="icon icon-11">
+       </i>
+       <i class="icon icon-9">
+       </i>
+       <i class="icon icon-6">
+       </i>
+       <i class="icon icon-5">
+       </i>
+      </div>
+     </a>
+     <div class="task__tags ml-auto">
+      <div class="badge badge-primary">
+       <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:arch-exec" target="_blank">
+        arch-exec
+       </a>
+      </div>
+      <div class="badge badge-primary">
+       <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:lumma" target="_blank">
+        lumma
+       </a>
+      </div>
+      <div class="badge badge-primary">
+       <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:stealer" target="_blank">
+        stealer
+       </a>
+      </div>
+      <div class="badge badge-primary">
+       <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:loader" target="_blank">
+        loader
+       </a>
+      </div>
+     </div>
+    </div>
+    <div class="task">
+     <a class="task__link" href="https://app.any.run/tasks/d6b439b1-f5d7-4f37-a6a4-05456b07b065" target="_blank">
+      <div class="task__date">
+       20 December, 2024
+      </div>
+      <div class="task__verdict">
+       <div class="badge badge-danger">
+        Malicious activity
+       </div>
+      </div>
+      <div class="task__name">
+       SlimMajority7474.zip
+      </div>
+      <div class="task__indicators">
+       <i class="icon icon-11">
+       </i>
+       <i class="icon icon-9">
+       </i>
+       <i class="icon icon-6">
+       </i>
+       <i class="icon icon-5">
+       </i>
+      </div>
+     </a>
+     <div class="task__tags ml-auto">
+      <div class="badge badge-primary">
+       <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:arch-exec" target="_blank">
+        arch-exec
+       </a>
+      </div>
+      <div class="badge badge-primary">
+       <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:lumma" target="_blank">
+        lumma
+       </a>
+      </div>
+      <div class="badge badge-primary">
+       <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:stealer" target="_blank">
+        stealer
+       </a>
+      </div>
+     </div>
+    </div>
+    <div class="task">
+     <a class="task__link" href="https://app.any.run/tasks/f02a2637-3513-4cd4-a100-b9691bf49879" target="_blank">
+      <div class="task__date">
+       20 December, 2024
+      </div>
+      <div class="task__verdict">
+       <div class="badge badge-danger">
+        Malicious activity
+       </div>
+      </div>
+      <div class="task__name">
+       f02a2637-3513-4cd4-a100-b9691bf49879
+      </div>
+      <div class="task__indicators">
+       <i class="icon icon-11">
+       </i>
+       <i class="icon icon-6">
+       </i>
+       <i class="icon icon-5">
+       </i>
+      </div>
+     </a>
+     <div class="task__tags ml-auto">
+      <div class="badge badge-primary">
+       <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:stealer" target="_blank">
+        stealer
+       </a>
+      </div>
+      <div class="badge badge-primary">
+       <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:lumma" target="_blank">
+        lumma
+       </a>
+      </div>
+     </div>
+    </div>
+    <div class="task">
+     <a class="task__link" href="https://app.any.run/tasks/fcca18eb-9c10-408c-8883-2cea2acbdb25" target="_blank">
+      <div class="task__date">
+       20 December, 2024
+      </div>
+      <div class="task__verdict">
+       <div class="badge badge-danger">
+        Malicious activity
+       </div>
+      </div>
+      <div class="task__name">
+       Captcha.hta
+      </div>
+      <div class="task__indicators">
+       <i class="icon icon-11">
+       </i>
+       <i class="icon icon-10">
+       </i>
+       <i class="icon icon-9">
+       </i>
+       <i class="icon icon-6">
+       </i>
+       <i class="icon icon-5">
+       </i>
+      </div>
+     </a>
+     <div class="task__tags ml-auto">
+      <div class="badge badge-primary">
+       <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:loader" target="_blank">
+        loader
+       </a>
+      </div>
+      <div class="badge badge-primary">
+       <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:lumma" target="_blank">
+        lumma
+       </a>
+      </div>
+      <div class="badge badge-primary">
+       <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:stealer" target="_blank">
+        stealer
+       </a>
+      </div>
+     </div>
+    </div>
+    <div class="task">
+     <a class="task__link" href="https://app.any.run/tasks/fe66ced0-f305-4b58-ae8c-cd8063c78564" target="_blank">
+      <div class="task__date">
+       20 December, 2024
+      </div>
+      <div class="task__verdict">
+       <div class="badge badge-danger">
+        Malicious activity
+       </div>
+      </div>
+      <div class="task__name">
+       YK56F_file.exe
+      </div>
+      <div class="task__indicators">
+       <i class="icon icon-10">
+       </i>
+       <i class="icon icon-9">
+       </i>
+       <i class="icon icon-7">
+       </i>
+      </div>
+     </a>
+     <div class="task__tags ml-auto">
+      <div class="badge badge-primary">
+       <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:lumma" target="_blank">
+        lumma
+       </a>
+      </div>
+      <div class="badge badge-primary">
+       <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:stealer" target="_blank">
+        stealer
+       </a>
+      </div>
+      <div class="badge badge-primary">
+       <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:loader" target="_blank">
+        loader
+       </a>
+      </div>
+      <div class="badge badge-primary">
+       <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:themida" target="_blank">
+        themida
+       </a>
+      </div>
+     </div>
+    </div>
+    <div class="task">
+     <a class="task__link" href="https://app.any.run/tasks/1f912c13-dbb7-4386-a6a6-52c005e0e9b5" target="_blank">
+      <div class="task__date">
+       20 December, 2024
+      </div>
+      <div class="task__verdict">
+       <div class="badge badge-danger">
+        Malicious activity
+       </div>
+      </div>
+      <div class="task__name">
+       file
+      </div>
+      <div class="task__indicators">
+       <i class="icon icon-18">
+       </i>
+       <i class="icon icon-11">
+       </i>
+       <i class="icon icon-10">
+       </i>
+       <i class="icon icon-9">
+       </i>
+       <i class="icon icon-7">
+       </i>
+       <i class="icon icon-6">
+       </i>
+       <i class="icon icon-5">
+       </i>
+       <i class="icon icon-4">
+       </i>
+       <i class="icon icon-2">
+       </i>
+      </div>
+     </a>
+     <div class="task__tags ml-auto">
+      <div class="badge badge-primary">
+       <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:amadey" target="_blank">
+        amadey
+       </a>
+      </div>
+      <div class="badge badge-primary">
+       <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:botnet" target="_blank">
+        botnet
+       </a>
+      </div>
+      <div class="badge badge-primary">
+       <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:stealer" target="_blank">
+        stealer
+       </a>
+      </div>
+      <div class="badge badge-primary">
+       <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:loader" target="_blank">
+        loader
+       </a>
+      </div>
+      <div class="badge badge-primary">
+       <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:cryptbot" target="_blank">
+        cryptbot
+       </a>
+      </div>
+      <div class="badge badge-primary">
+       <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:lumma" target="_blank">
+        lumma
+       </a>
+      </div>
+      <div class="badge badge-primary">
+       <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:github" target="_blank">
+        github
+       </a>
+      </div>
+      <div class="badge badge-primary">
+       <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:telegram" target="_blank">
+        telegram
+       </a>
+      </div>
+      <div class="badge badge-primary">
+       <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:stealc" target="_blank">
+        stealc
+       </a>
+      </div>
+      <div class="badge badge-primary">
+       <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:gcleaner" target="_blank">
+        gcleaner
+       </a>
+      </div>
+      <div class="badge badge-primary">
+       <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:credentialflusher" target="_blank">
+        credentialflusher
+       </a>
+      </div>
+      <div class="badge badge-primary">
+       <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:themida" target="_blank">
+        themida
+       </a>
+      </div>
+     </div>
+    </div>
+    <div class="task">
+     <a class="task__link" href="https://app.any.run/tasks/b4d94b2a-41ed-40c4-8cd3-b9bde2076cf5" target="_blank">
+      <div class="task__date">
+       20 December, 2024
+      </div>
+      <div class="task__verdict">
+       <div class="badge badge-danger">
+        Malicious activity
+       </div>
+      </div>
+      <div class="task__name">
+       file.exe
+      </div>
+      <div class="task__indicators">
+       <i class="icon icon-18">
+       </i>
+       <i class="icon icon-11">
+       </i>
+       <i class="icon icon-10">
+       </i>
+       <i class="icon icon-9">
+       </i>
+       <i class="icon icon-7">
+       </i>
+       <i class="icon icon-6">
+       </i>
+       <i class="icon icon-5">
+       </i>
+       <i class="icon icon-2">
+       </i>
+      </div>
+     </a>
+     <div class="task__tags ml-auto">
+      <div class="badge badge-primary">
+       <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:amadey" target="_blank">
+        amadey
+       </a>
+      </div>
+      <div class="badge badge-primary">
+       <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:botnet" target="_blank">
+        botnet
+       </a>
+      </div>
+      <div class="badge badge-primary">
+       <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:stealer" target="_blank">
+        stealer
+       </a>
+      </div>
+      <div class="badge badge-primary">
+       <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:loader" target="_blank">
+        loader
+       </a>
+      </div>
+      <div class="badge badge-primary">
+       <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:lumma" target="_blank">
+        lumma
+       </a>
+      </div>
+      <div class="badge badge-primary">
+       <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:cryptbot" target="_blank">
+        cryptbot
+       </a>
+      </div>
+      <div class="badge badge-primary">
+       <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:github" target="_blank">
+        github
+       </a>
+      </div>
+      <div class="badge badge-primary">
+       <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:telegram" target="_blank">
+        telegram
+       </a>
+      </div>
+      <div class="badge badge-primary">
+       <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:gcleaner" target="_blank">
+        gcleaner
+       </a>
+      </div>
+      <div class="badge badge-primary">
+       <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:stealc" target="_blank">
+        stealc
+       </a>
+      </div>
+     </div>
+    </div>
+    <div class="task">
+     <a class="task__link" href="https://app.any.run/tasks/59ba4e8e-6fd9-489f-9720-e51e9bab514c" target="_blank">
+      <div class="task__date">
+       20 December, 2024
+      </div>
+      <div class="task__verdict">
+       <div class="badge badge-danger">
+        Malicious activity
+       </div>
+      </div>
+      <div class="task__name">
+       8ZVMneG.exe
+      </div>
+      <div class="task__indicators">
+       <i class="icon icon-11">
+       </i>
+       <i class="icon icon-9">
+       </i>
+       <i class="icon icon-5">
+       </i>
+      </div>
+     </a>
+     <div class="task__tags ml-auto">
+      <div class="badge badge-primary">
+       <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:lumma" target="_blank">
+        lumma
+       </a>
+      </div>
+      <div class="badge badge-primary">
+       <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:stealer" target="_blank">
+        stealer
+       </a>
+      </div>
+     </div>
+    </div>
+   </div>
+   <div class="publicSubmissions__footer_wrapper">
+    <div class="container publicSubmissions__footer">
+     <div class="description">
+      TRACK THEM ALL AT
+      <div class="arrows">
+       <i aria-hidden="true" class="fa fa-chevron-right">
+       </i>
+       <i aria-hidden="true" class="fa fa-chevron-right">
+       </i>
+       <i aria-hidden="true" class="fa fa-chevron-right">
+       </i>
+      </div>
+     </div>
+     <a class="publicSubmissions__footer__btn" href="https://app.any.run/submissions#tag:lumma" target="_blank">
+      Public Submissions
+     </a>
+    </div>
+   </div>
+  </div>
+  <div class="recentPostsMobile">
+   <div class="container">
+    <h2 class="recentPostsMobile__title">
+     Recent blog posts
+    </h2>
+   </div>
+   <a class="recentPostsMobile__link" href="https://any.run/cybersecurity-blog/cybersecurity-awards-2024/" target="__blank">
+    <div class="container">
+     <div class="recentPostsMobile__block">
+      <div class="recentPostsMobile__img">
+       <img alt="post image" src="https://any.run/cybersecurity-blog/wp-content/uploads/2024/12/awards_24_blog-1024x497.jpg"/>
+      </div>
+      <div class="recentPostsMobile__content">
+       <div class="recentPostsMobile__content_title">
+        Well done, ANY.RUN: Our Top Cybersecurity Awa...
+       </div>
+       <div class="recentPostsMobile__content_addInfo">
+        <div class="recentPostsMobile__content_addInfo_watchers d-flex align-items-center">
+         <img alt="watchers" src="/malware-trends/img/watcher.svg"/>
+         <span class="ml-2 recentPostsMobile__content_counter">
+          154
+         </span>
+        </div>
+        <div class="recentPostsMobile__content_addInfo_comments ml-3 d-flex align-items-center">
+         <img alt="comments" src="/malware-trends/img/comment.svg"/>
+         <span class="ml-2 recentPostsMobile__content_counter">
+          0
+         </span>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </a>
+   <a class="recentPostsMobile__link" href="https://any.run/cybersecurity-blog/sandbox-use-cases-for-dfir/" target="__blank">
+    <div class="container">
+     <div class="recentPostsMobile__block">
+      <div class="recentPostsMobile__img">
+       <img alt="post image" src="https://any.run/cybersecurity-blog/wp-content/uploads/2024/12/dfir_blog-1024x497.jpg"/>
+      </div>
+      <div class="recentPostsMobile__content">
+       <div class="recentPostsMobile__content_title">
+        How DFIR Analysts Use ANY.RUN Sandbox
+       </div>
+       <div class="recentPostsMobile__content_addInfo">
+        <div class="recentPostsMobile__content_addInfo_watchers d-flex align-items-center">
+         <img alt="watchers" src="/malware-trends/img/watcher.svg"/>
+         <span class="ml-2 recentPostsMobile__content_counter">
+          249
+         </span>
+        </div>
+        <div class="recentPostsMobile__content_addInfo_comments ml-3 d-flex align-items-center">
+         <img alt="comments" src="/malware-trends/img/comment.svg"/>
+         <span class="ml-2 recentPostsMobile__content_counter">
+          0
+         </span>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </a>
+   <a class="recentPostsMobile__link" href="https://any.run/cybersecurity-blog/windows-11-malware-sandbox/" target="__blank">
+    <div class="container">
+     <div class="recentPostsMobile__block last">
+      <div class="recentPostsMobile__img">
+       <img alt="post image" src="https://any.run/cybersecurity-blog/wp-content/uploads/2024/12/windows11_blog-1024x497.jpg"/>
+      </div>
+      <div class="recentPostsMobile__content">
+       <div class="recentPostsMobile__content_title">
+        How to Set up a Windows 11 Malware Sandbox
+       </div>
+       <div class="recentPostsMobile__content_addInfo">
+        <div class="recentPostsMobile__content_addInfo_watchers d-flex align-items-center">
+         <img alt="watchers" src="/malware-trends/img/watcher.svg"/>
+         <span class="ml-2 recentPostsMobile__content_counter">
+          1046
+         </span>
+        </div>
+        <div class="recentPostsMobile__content_addInfo_comments ml-3 d-flex align-items-center">
+         <img alt="comments" src="/malware-trends/img/comment.svg"/>
+         <span class="ml-2 recentPostsMobile__content_counter">
+          0
+         </span>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </a>
+  </div>
+  <section class="threat">
+   <div class="container row--article">
+    <div class="row">
+     <div class="col-lg-4 col-sm-12 col--articleNav">
+      <div class="mainContent">
+       <div class="articleNav">
+        <h2 class="articleNav__title" id="contentMenuHeader">
+         Contents
+        </h2>
+        <ul class="articleNav__content_hidden" id="contentMenu">
+         <li class="articleNav__item" id="What" is="" key="0" lumma="" malware?="" stealer="">
+          What is Lumma Stealer malware?
+         </li>
+         <li class="articleNav__item" details="" id="Technical" key="1" lumma="" malicious="" of="" software="" stealer="" the="">
+          Technical details of the Lumma Stealer malicious software
+         </li>
+         <li class="articleNav__item" id="Execution" key="2" lumma="" of="" process="" stealer="">
+          Execution process of Lumma Stealer
+         </li>
+         <li class="articleNav__item" id="Gathering" intelligence="" key="3" lumma="" malware="" on="" threat="">
+          Gathering threat intelligence on Lumma malware
+         </li>
+         <li class="articleNav__item" id="Distribution" key="4" lumma="" malware="" methods="" of="" stealer="" the="">
+          Distribution methods of the Lumma Stealer malware
+         </li>
+         <li class="articleNav__item" id="Conclusion" key="5">
+          Conclusion
+         </li>
+        </ul>
+       </div>
+       <div class="recentPosts">
+        <h2 class="recentPosts__title">
+         Recent blog posts
+        </h2>
+        <a class="recentPosts__block" href="https://any.run/cybersecurity-blog/cybersecurity-awards-2024/" target="__blank">
+         <div class="recentPosts__img">
+          <img alt="post image" src="https://any.run/cybersecurity-blog/wp-content/uploads/2024/12/awards_24_blog-1024x497.jpg"/>
+         </div>
+         <div class="recentPosts__content">
+          <div class="recentPosts__content_title">
+           Well done, ANY.RUN: Our Top Cybersecurity Awa...
+          </div>
+          <div class="recentPosts__content_addInfo">
+           <div class="recentPosts__content_addInfo_watchers d-flex align-items-center">
+            <img alt="watchers" src="/malware-trends/img/watcher.svg"/>
+            <span class="ml-2 recentPosts__content_counter">
+             154
+            </span>
+           </div>
+           <div class="recentPosts__content_addInfo_comments ml-3 d-flex align-items-center">
+            <img alt="comments" src="/malware-trends/img/comment.svg"/>
+            <span class="ml-2 recentPosts__content_counter">
+             0
+            </span>
+           </div>
+          </div>
+         </div>
+        </a>
+        <hr/>
+        <a class="recentPosts__block" href="https://any.run/cybersecurity-blog/sandbox-use-cases-for-dfir/" target="__blank">
+         <div class="recentPosts__img">
+          <img alt="post image" src="https://any.run/cybersecurity-blog/wp-content/uploads/2024/12/dfir_blog-1024x497.jpg"/>
+         </div>
+         <div class="recentPosts__content">
+          <div class="recentPosts__content_title">
+           How DFIR Analysts Use ANY.RUN Sandbox
+          </div>
+          <div class="recentPosts__content_addInfo">
+           <div class="recentPosts__content_addInfo_watchers d-flex align-items-center">
+            <img alt="watchers" src="/malware-trends/img/watcher.svg"/>
+            <span class="ml-2 recentPosts__content_counter">
+             249
+            </span>
+           </div>
+           <div class="recentPosts__content_addInfo_comments ml-3 d-flex align-items-center">
+            <img alt="comments" src="/malware-trends/img/comment.svg"/>
+            <span class="ml-2 recentPosts__content_counter">
+             0
+            </span>
+           </div>
+          </div>
+         </div>
+        </a>
+        <hr/>
+        <a class="recentPosts__block" href="https://any.run/cybersecurity-blog/windows-11-malware-sandbox/" target="__blank">
+         <div class="recentPosts__img">
+          <img alt="post image" src="https://any.run/cybersecurity-blog/wp-content/uploads/2024/12/windows11_blog-1024x497.jpg"/>
+         </div>
+         <div class="recentPosts__content">
+          <div class="recentPosts__content_title">
+           How to Set up a Windows 11 Malware Sandbox
+          </div>
+          <div class="recentPosts__content_addInfo">
+           <div class="recentPosts__content_addInfo_watchers d-flex align-items-center">
+            <img alt="watchers" src="/malware-trends/img/watcher.svg"/>
+            <span class="ml-2 recentPosts__content_counter">
+             1046
+            </span>
+           </div>
+           <div class="recentPosts__content_addInfo_comments ml-3 d-flex align-items-center">
+            <img alt="comments" src="/malware-trends/img/comment.svg"/>
+            <span class="ml-2 recentPosts__content_counter">
+             0
+            </span>
+           </div>
+          </div>
+         </div>
+        </a>
+        <hr/>
+       </div>
+      </div>
+     </div>
+     <div class="col-lg-8 col-sm-12 col--article">
+      <div id="threat">
+      </div>
+      <article>
+       <h2 id="what-is-lumma-stealer-malware">
+        What is Lumma Stealer malware?
+       </h2>
+       <p>
+        Lumma is a widely accessible malware stealer that is sold openly across Dark Web forums and Telegram channels. Although not as popular as other stealers, such as
+        <a href="https://any.run/malware-trends/redline" target="_blank">
+         RedLine
+        </a>
+        and
+        <a href="https://any.run/malware-trends/formbook" target="_blank">
+         Formbook
+        </a>
+        , it has gained considerable traction among cybercriminals that focus on exfiltrating sensitive information from unsuspecting victims. Operated by a group believed to originate from former USSR countries, LummaC2 Stealer has been actively evolving since its initial emergence in 2022, getting substantial updates that enhance its capabilities.
+       </p>
+       <p>
+        Lumma Stealer poses a significant threat to a wide range of computer systems, targeting devices running Windows operating systems from Windows 7 up to Windows 11. This broad compatibility allows the malware to infiltrate a vast network of systems, increasing its potential reach and impact.
+       </p>
+       <p>
+        Since it operates under a malware-as-a-service model, Lumma Stealer is accessible to anyone with the financial means to purchase a subscription. This accessibility has contributed to the malware's widespread adoption. There are three subscription plans, each providing a varying range of features to users, including access to a command-and-control (C2) panel, which allows criminals to monitor and manage the malware's activities on compromised machines.
+       </p>
+       <div class="demo-button-tracker demo-button-tracker--new">
+        <h3 class="demo-button-tracker__caption">
+         Get started today for free
+        </h3>
+        <p class="demo-button-tracker__passage">
+         Analyze malware and phishing in a fully-interactive sandbox
+        </p>
+        <a class="demo-button-tracker__link" href="https://app.any.run/#register" target="_blank">
+         Create free account
+        </a>
+       </div>
+       <h2 id="technical-details-of-the-lumma-stealer-malicious-software">
+        Technical details of the Lumma Stealer malicious software
+       </h2>
+       <p>
+        Lumma enables criminals to engage in a variety of illicit activities and a has a long list of capabilities, including:
+       </p>
+       <ul>
+        <li>
+         <strong>
+          Data exfiltration:
+         </strong>
+         The malware effectively gathers sensitive information from targeted applications, including login credentials, financial data, and personal details.
+        </li>
+        <li>
+         <strong>
+          Regular updates:
+         </strong>
+         LummaC2 Stealer receives automatic updates on a regular basis.
+        </li>
+        <li>
+         <strong>
+          Data log collection:
+         </strong>
+         Lumma Stealer collects detailed data logs from compromised endpoints, including information extracted from browsers and cryptocurrency wallets.
+        </li>
+        <li>
+         <strong>
+          Loader capability:
+         </strong>
+         The stealer can drop additional malware onto compromised machines, expanding its malicious capabilities and potential impact.
+        </li>
+       </ul>
+       <p>
+        Lumma Stealer has a vast range of features that make it a versatile tool for cybercriminals. For instance, all data transmitted by the stealer is decrypted on the server side, which makes it more difficult to analyze the malware’s traffic during the exfiltration process.
+       </p>
+       <p>
+        Another notable capability of the malware is its neighbor detection, which notifies operators about other instances of the malware running on the same system. The malware supports ARM, x86, and x64 architectures, demonstrating its cross-platform compatibility and ability to target a wide range of devices.
+       </p>
+       <p>
+        The stealer can also be configured to be used via a Telegram bot.
+       </p>
+       <h2 id="execution-process-of-lumma-stealer">
+        Execution process of Lumma Stealer
+       </h2>
+       <p>
+        ANY.RUN lets us expose the malicious activities of Lumma Stealer and collect IOCs by uploading its
+        <a href="https://app.any.run/tasks/20a99057-6518-4354-90fe-3857d0a583c8/?utm_source=mtt&amp;utm_medium=article&amp;utm_campaign=lumma&amp;utm_content=task&amp;utm_term=161123" target="_blank">
+         sample
+        </a>
+        to the sandbox.
+       </p>
+       <p>
+        Since stealers are trying their best to hide their activities, the execution chain of LummaC2 Stealer is kept as simple as possible. Therefore, there are not a lot of processes, and no usage of system tools occurs inside the infected OS. After the payload makes its way into the infected system, it immediately starts execution.
+       </p>
+       <p>
+        <img alt="Lumma graph shown in ANY.RUN" src="/malware-trends/images/lummagraph.png"/>
+        <em>
+         The process graph of Lumma Stealer demonstrated by the ANY.RUN sandbox
+        </em>
+       </p>
+       <p>
+        The only process of the malware is responsible for carrying out all malicious activities, including data theft, C&amp;C server communication, etc. If there is no connection with the C&amp;C, Lumma stops its execution.
+       </p>
+       <h2 id="gathering-threat-intelligence-on-lumma-malware">
+        Gathering threat intelligence on Lumma malware
+       </h2>
+       <p>
+        To collect up-to-date intelligence on Lumma, use
+        <a href="https://any.run/cybersecurity-blog/introducing-any-run-threat-intelligence-lookup/" target="_blank">
+         Threat Intelligence Lookup
+        </a>
+        .
+       </p>
+       <p>
+        This service gives you access to a vast database filled with insights from millions of malware analysis sessions conducted in the
+        <a href="https://any.run/?utm_source=mtt&amp;utm_medium=article&amp;utm_campaign=lumma&amp;utm_content=landing&amp;utm_term=161123" target="_blank">
+         ANY.RUN sandbox
+        </a>
+        .
+       </p>
+       <p>
+        With over
+        <a href="https://any.run/cybersecurity-blog/ti-lookup-search-parameters/" target="_blank">
+         40 customizable search parameters
+        </a>
+        , including IPs, domains, file names, and process artifacts, you can efficiently gather relevant data on threats like Lumma Stealer.
+       </p>
+       <p>
+        <img alt="Lumma ANY.RUN" src="/malware-trends/images/lumma_lookup.png"/>
+        <em>
+         Search results for Lumma Stealer in Threat Intelligence Lookup
+        </em>
+       </p>
+       <p>
+        For example, you can search directly for the threat name or use related indicators like hash values or network connections. Submitting a query such as
+        <a href="https://intelligence.any.run/analysis/lookup/?utm_source=mtt&amp;utm_medium=article&amp;utm_campaign=lumma&amp;utm_content=landing&amp;utm_term=161123#%7B%2522query%2522:%2522threatName:%255C%2522lumma%255C%2522%25C2%25A0AND%25C2%25A0domainName:%255C%2522%255C%2522%2522,%2522dateRange%2522:180%7D" target="_blank">
+         threatName:"Lumma" AND domain:""
+        </a>
+        will generate a list of files, events, domain names, and other data extracted from Lumma samples along with sandbox sessions that you can explore in detail to gain comprehensive insights into this malware’s behavior.
+       </p>
+       <div class="demo-button-tracker demo-button-tracker--new demo-button-tracker--ti">
+        <h3 class="demo-button-tracker__caption">
+         Integrate
+         <span class="decor-1">
+          ANY.RUN’s
+         </span>
+         threat
+         <span class="demo-button-tracker__row">
+          intelligence solutions
+          <span>
+           in your company
+          </span>
+         </span>
+        </h3>
+        <a class="demo-button-tracker__link" href="https://intelligence.any.run/plans" target="_blank">
+         Contact us
+        </a>
+       </div>
+       <h2 id="distribution-methods-of-the-lumma-stealer-malware">
+        Distribution methods of the Lumma Stealer malware
+       </h2>
+       <p>
+        Lumma is utilized by numerous threat actors, both individuals and groups, who employ a variety of ways to deliver the payload to the target system.
+       </p>
+       <ul>
+        <li>
+         <strong>
+          Fake Software:
+         </strong>
+         One of the most prevalent methods used to distribute Lumma Stealer is through fake software. When unsuspecting users download and install these fake applications, they introduce the malware onto their systems.
+        </li>
+        <li>
+         <strong>
+          Phishing Emails:
+         </strong>
+         Phishing emails remain a widely used attack vector for malware distribution, including Lumma Stealer. Cybercriminals craft emails that appear to be from legitimate sources, such as banks, e-commerce platforms, or social media networks.
+        </li>
+        <li>
+         <strong>
+          Discord Messages:
+         </strong>
+         In some cases, Lumma Stealer operators have taken to targeting users through direct messaging on Discord, a popular chat platform. These actors engage with victims, attempting to build trust and persuade them to download infected executables under false pretenses.
+        </li>
+       </ul>
+       <h2 id="conclusion">
+        Conclusion
+       </h2>
+       <p>
+        The growing threat of LummaC2 Stealer calls for a proactive approach to cybersecurity. As this malware becomes more common, individuals and organizations must be aware of its diverse delivery methods and take steps to protect themselves. Malware analysis sandboxes, such as
+        <a href="https://any.run/?utm_source=mtt&amp;utm_medium=article&amp;utm_campaign=lumma&amp;utm_content=landing&amp;utm_term=161123" target="_blank">
+         ANY.RUN
+        </a>
+        are a valuable tool for identifying and analyzing Lumma Stealer.
+       </p>
+       <p>
+        ANY.RUN is an advanced tool that provides a unique way to study malware. You can interact with infected systems in a safe cloud environment to observe how the malware behaves. It goes beyond simple observation by generating a detailed report that includes IOCs and malware configuration information, enabling you to take action against malware threats.
+       </p>
+       <p>
+        Try ANY.RUN for free –
+        <a href="https://any.run/demo/?utm_source=mtt&amp;utm_medium=article&amp;utm_campaign=lumma&amp;utm_content=trial&amp;utm_term=161123" target="_blank">
+         request a demo!
+        </a>
+       </p>
+      </article>
+     </div>
+    </div>
+   </div>
+  </section>
+  <section class="alsoSee">
+   <div class="container">
+    <h3 class="text-center">
+     HAVE A LOOK AT
+    </h3>
+    <div class="alsoSee">
+     <div id="slickPrev">
+      <svg enable-background="new 0 0 100 100" version="1.0" viewbox="0 0 100 125" x="0px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" y="0px">
+       <g display="none">
+        <rect display="inline" fill="#000000" height="100" width="100" x="0" y="0.015">
+        </rect>
+       </g>
+       <g>
+        <path d="M57.978,21.714L33.649,46.043c-0.027,0.026-0.065,0.034-0.091,0.061c-1.146,1.146-1.715,2.659-1.711,4.17   c-0.004,1.511,0.564,3.023,1.711,4.17c0.027,0.027,0.064,0.034,0.091,0.061l24.329,24.329c2.285,2.285,6.024,2.285,8.308,0   s2.285-6.024,0-8.308L46.036,50.273l20.251-20.251c2.285-2.285,2.285-6.024,0-8.308S60.263,19.429,57.978,21.714z">
+        </path>
+       </g>
+      </svg>
+     </div>
+     <div class="slick" id="slick">
+      <div class="alsoSee__item">
+       <img alt="Meduza Stealer screenshot" class="img-fluid mx-auto d-block" src="/malware-trends/images/meduza_suricata.png"/>
+       <div class="alsoSee__content">
+        <div class="header">
+         <a href="/malware-trends/meduza">
+          Meduza Stealer
+         </a>
+         <div class="alsoSee__tags">
+          <span class="badge badge-danger">
+           meduza
+          </span>
+         </div>
+        </div>
+        <div class="description">
+         Meduza Stealer is an information-stealing malware primarily targeting Windows systems, designed to harvest sensitive data such as login credentials, browsing histories, cookies, cryptocurrency wallets, and password manager data. It has advanced anti-detection mechanisms, allowing it to evade many antivirus programs. The malware is distributed through various means, including phishing emails and malicious links. It’s marketed on underground forums and Telegram channels.
+        </div>
+        <a class="readMore" href="/malware-trends/meduza">
+         Read More
+        </a>
+       </div>
+      </div>
+      <div class="alsoSee__item">
+       <img alt="Orcus RAT screenshot" class="img-fluid mx-auto d-block" src="/malware-trends/images/orcus.png"/>
+       <div class="alsoSee__content">
+        <div class="header">
+         <a href="/malware-trends/orcus">
+          Orcus RAT
+         </a>
+         <div class="alsoSee__tags">
+          <span class="badge badge-danger">
+           orcus
+          </span>
+          <span class="badge badge-danger">
+           rat
+          </span>
+          <span class="badge badge-danger">
+           trojan
+          </span>
+         </div>
+        </div>
+        <div class="description">
+         Orcus is a modular Remote Access Trojan with some unusual functions. This RAT enables attackers to create plugins using a custom development library and offers a robust core feature set that makes it one of the most dangerous malicious programs in its class.
+        </div>
+        <a class="readMore" href="/malware-trends/orcus">
+         Read More
+        </a>
+       </div>
+      </div>
+      <div class="alsoSee__item">
+       <img alt="X-Files screenshot" class="img-fluid mx-auto d-block" src="/malware-trends/images/xfiles_graph.png"/>
+       <div class="alsoSee__content">
+        <div class="header">
+         <a href="/malware-trends/xfiles">
+          X-Files
+         </a>
+         <div class="alsoSee__tags">
+          <span class="badge badge-danger">
+           xfiles
+          </span>
+         </div>
+        </div>
+        <div class="description">
+         X-FILES Stealer is a sophisticated malware designed to infiltrate systems and steal sensitive information, targeting login credentials for email, social media, and other personal accounts. It captures data and transmits it back to the attacker’s command-and-control server. X-FILES Stealer employs advanced evasion techniques to avoid detection, making it a persistent threat in the cyber landscape.
+        </div>
+        <a class="readMore" href="/malware-trends/xfiles">
+         Read More
+        </a>
+       </div>
+      </div>
+      <div class="alsoSee__item">
+       <img alt="PureCrypter screenshot" class="img-fluid mx-auto d-block" src=""/>
+       <div class="alsoSee__content">
+        <div class="header">
+         <a href="/malware-trends/purecrypter">
+          PureCrypter
+         </a>
+         <div class="alsoSee__tags">
+          <span class="badge badge-danger">
+           purecrypter
+          </span>
+         </div>
+        </div>
+        <div class="description">
+         First identified in March 2021, PureCrypter is a .NET-based loader that employs obfuscation techniques, such as SmartAssembly, to evade detection. It has been used to distribute malware families including AgentTesla, RedLine Stealer, and SnakeKeylogger. The malware is typically delivered through phishing campaigns and malicious downloads, often masquerading as legitimate files with extensions like .mp4 or .pdf. PureCrypter utilizes encryption and compression to conceal its payloads and can inject malicious code into legitimate processes to maintain persistence on the infected system.
+        </div>
+        <a class="readMore" href="/malware-trends/purecrypter">
+         Read More
+        </a>
+       </div>
+      </div>
+      <div class="alsoSee__item">
+       <img alt="Balada Injector screenshot" class="img-fluid mx-auto d-block" src=""/>
+       <div class="alsoSee__content">
+        <div class="header">
+         <a href="/malware-trends/balada">
+          Balada Injector
+         </a>
+         <div class="alsoSee__tags">
+          <span class="badge badge-danger">
+           balada
+          </span>
+         </div>
+        </div>
+        <div class="description">
+         Balada Injector is a long-running malware campaign that targets WordPress websites by exploiting vulnerabilities in plugins and themes. The attackers inject malicious code into compromised sites, leading to unauthorized redirects, data theft, and the creation of [backdoors](https://any.run/malware-trends/backdoor) for persistent access. The campaign operates in waves, with spikes in activity observed every few weeks, continually adapting to exploit newly discovered vulnerabilities.
+        </div>
+        <a class="readMore" href="/malware-trends/balada">
+         Read More
+        </a>
+       </div>
+      </div>
+      <div class="alsoSee__item">
+       <img alt="LokiBot screenshot" class="img-fluid mx-auto d-block" src="/malware-trends/images/lokibot.png"/>
+       <div class="alsoSee__content">
+        <div class="header">
+         <a href="/malware-trends/lokibot">
+          LokiBot
+         </a>
+         <div class="alsoSee__tags">
+          <span class="badge badge-danger">
+           lokibot
+          </span>
+          <span class="badge badge-danger">
+           loader
+          </span>
+          <span class="badge badge-danger">
+           trojan
+          </span>
+         </div>
+        </div>
+        <div class="description">
+         LokiBot was developed in 2015 to steal information from a variety of applications. Despite the age, this malware is still rather popular among cybercriminals.
+        </div>
+        <a class="readMore" href="/malware-trends/lokibot">
+         Read More
+        </a>
+       </div>
+      </div>
+     </div>
+     <div id="slickNext">
+      <svg enable-background="new 0 0 100 100" version="1.0" viewbox="0 0 100 125" x="0px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" y="0px">
+       <g display="none">
+        <rect display="inline" fill="#000000" height="100" width="100" x="0" y="0.015">
+        </rect>
+       </g>
+       <g>
+        <path d="M41.869,78.832l24.329-24.329c0.027-0.026,0.065-0.034,0.091-0.061c1.146-1.146,1.715-2.659,1.711-4.17   c0.004-1.511-0.564-3.023-1.711-4.17c-0.027-0.027-0.064-0.034-0.091-0.061L41.869,21.714c-2.285-2.285-6.024-2.285-8.308,0   s-2.285,6.024,0,8.308l20.251,20.251L33.56,70.524c-2.285,2.285-2.285,6.024,0,8.308C35.845,81.117,39.584,81.117,41.869,78.832z">
+        </path>
+       </g>
+      </svg>
+     </div>
+    </div>
+   </div>
+  </section>
+  <footer class="footer">
+   <script type="application/ld+json">
+    {
+          "@context": "http://schema.org/",
+          "@type": "WPFooter",
+          "image": {
+            "@type": "ImageObject",
+            "url": "https://any.run/img/logo.svg"
+          },
+          "inLanguage": "en-US",
+          "name": "ANY.RUN",
+          "url": "https://any.run"
+        }
+   </script>
+   <div class="container-fluid footer__inner">
+    <div class="footer__row">
+     <div class="footer__col footer__col_logo">
+      <a class="footer__logo" href="/">
+       <div class="footer__logo-text">
+        ANY
+       </div>
+       <div class="footer__logo-icon">
+        <svg height="302.000000pt" preserveaspectratio="xMidYMid meet" version="1.0" viewbox="0 0 266.000000 302.000000" width="266.000000pt" xmlns="http://www.w3.org/2000/svg">
+         <g fill="#00B0E8" stroke="none" transform="translate(0.000000,302.000000) scale(0.100000,-0.100000)">
+          <path d="M607 3006 c-22 -8 -50 -25 -64 -38 -56 -52 -53 9 -53 -1128 0 -577 3
+                  -1050 8 -1050 4 0 48 24 97 53 l90 53 3 947 c1 521 4 947 6 947 2 0 1692 -974
+                  1729 -997 5 -3 -30 -27 -77 -55 -48 -27 -84 -53 -81 -58 2 -4 46 -31 96 -60
+                  l92 -52 32 18 c94 50 140 89 159 135 27 67 16 129 -32 180 -26 26 -315 199
+                  -937 557 -495 286 -914 526 -930 535 -47 24 -96 28 -138 13z">
+          </path>
+          <path d="M123 2729 c-45 -13 -100 -71 -113 -118 -7 -27 -9 -384 -8 -1123 l3
+                  -1084 27 -41 c36 -55 104 -88 163 -80 34 5 253 127 947 528 497 286 904 522
+                  905 523 1 1 -43 28 -98 60 l-100 57 -816 -470 c-448 -259 -819 -471 -824 -471
+                  -5 0 -9 402 -9 1000 0 600 4 1000 9 1000 5 0 44 -20 85 -45 42 -25 79 -45 82
+                  -45 2 0 3 53 2 117 l-3 117 -83 43 c-84 44 -111 49 -169 32z">
+          </path>
+          <path d="M792 2293 l3 -117 818 -472 818 -472 -33 -20 c-65 -40 -1700 -982
+                  -1704 -982 -2 0 -4 45 -4 101 0 55 -4 99 -8 97 -4 -1 -49 -27 -100 -56 l-92
+                  -54 0 -94 c0 -105 10 -136 60 -178 45 -38 101 -52 149 -38 32 10 1731 983
+                  1871 1072 60 39 84 81 85 151 0 109 51 75 -935 644 -486 281 -894 516 -907
+                  523 l-24 13 3 -118z">
+          </path>
+         </g>
+        </svg>
+       </div>
+       <div class="footer__logo-text">
+        RUN
+       </div>
+      </a>
+      <div class="footer__address">
+       ANYRUN FZCO – Dubai Silicon Oasis,
+       <br/>
+       Techno Hub 1, Unit 21, 60th Street, Dubai, UAE
+      </div>
+     </div>
+     <div class="footer__col footer__col_multiple">
+      <div class="footer__col-inner footer__col-inner_feedback">
+       <div class="footer__col-title">
+        Share your feedback
+       </div>
+       <div class="seo-widgets">
+        <div class="seo-widgets__item seo-widgets__item_gartner" id="gartner-widget" style="display: none;">
+        </div>
+        <div class="seo-widgets__item seo-widgets__item_g2" id="g2-widget">
+         <a href="https://www.g2.com/products/any-run/reviews/" target="_blank" title="Write a review of Any.Run on G2">
+          <img alt="Review Any.Run on G2" class="full-width" src="/malware-trends/img/g2-widget.png" style="max-width: 200px"/>
+         </a>
+        </div>
+       </div>
+       <div class="footer__col-address">
+        ANYRUN FZCO – Dubai Silicon Oasis,
+        <br/>
+        Techno Hub 1, Unit 21, 60th Street, Dubai, UAE
+       </div>
+      </div>
+      <div class="footer__col-inner footer__col-inner_contact">
+       <div class="footer__col-title">
+        Contact us
+       </div>
+       <div class="footer__emails">
+        <div class="footer__emails-item">
+         <div class="footer__email-desc">
+          Support, sales and trial inquiries
+         </div>
+         <a class="footer__email-link" href="/cdn-cgi/l/email-protection#98ebede8e8f7eaecd8f9f6e1b6eaedf6" target="_blank">
+          <span class="__cf_email__" data-cfemail="f685838686998482b697988fd8848398">
+           [email protected]
+          </span>
+         </a>
+        </div>
+        <div class="footer__emails-item">
+         <div class="footer__email-desc">
+          Public relations and partnerships
+         </div>
+         <a class="footer__email-link" href="/cdn-cgi/l/email-protection#78080a38191601560a0d16" target="_blank">
+          <span class="__cf_email__" data-cfemail="ed9d9fad8c8394c39f9883">
+           [email protected]
+          </span>
+         </a>
+        </div>
+       </div>
+       <div class="follow-us">
+        <aside class="follow-us__wrapper" itemscope="" itemtype="http://schema.org/WPSideBar">
+         <a aria-label="ANY.RUN Twitter" class="follow-us__link" href="https://twitter.com/anyrun_app" itemprop="name" rel="nofollow" target="_blank">
+          <i class="fab fa-x-twitter fa-2x">
+          </i>
+         </a>
+         <a aria-label="ANY.RUN Youtube" class="follow-us__link" href="https://www.youtube.com/c/ANYRUN" itemprop="name" rel="nofollow" target="_blank">
+          <i class="fab fa-youtube fa-2x">
+          </i>
+         </a>
+         <a aria-label="ANY.RUN Discord" class="follow-us__link" href="https://discord.gg/xqnHs4svxM" itemprop="name" rel="nofollow" target="_blank">
+          <i class="fab fa-discord fa-2x">
+          </i>
+         </a>
+        </aside>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+   <div class="footer__bottom">
+    <div class="footer__legal">
+     <a class="footer__legal-link" href="https://any.run/terms.pdf" target="_blank">
+      Terms of Use
+     </a>
+     <a class="footer__legal-link" href="https://any.run/privacy.pdf" target="_blank">
+      Privacy Policy
+     </a>
+     <a class="footer__legal-link" href="https://any.run/cookie-policy" target="_blank">
+      Cookie Policy
+     </a>
+    </div>
+    <div class="footer__copyright">
+     <div class="footer__copyright-text">
+      © 2024 ANY.RUN All rights reserved.
+     </div>
+    </div>
+   </div>
+  </footer>
+  <template id="ti-lookup-banner">
+   <div class="top-banner ti-lookup-banner js-banner">
+    <div class="ti-lookup-banner__inner">
+     <div class="banner-text ti-lookup-banner__title">
+      YARA Search
+     </div>
+     <div class="banner-text ti-lookup-banner__text">
+      <div class="ti-lookup-banner__text--desktop">
+       <span class="ti-lookup-banner__text--bold">
+        Search for threats by YARA
+       </span>
+       <br/>
+       in 2TB of real-world data
+      </div>
+      <div class="ti-lookup-banner__text--mobile ti-lookup-banner__text--opacity">
+       <span class="ti-lookup-banner__text--bold">
+        Search for threats by YARA
+       </span>
+       in 2TB of real-world data
+      </div>
+     </div>
+     <a class="banner-text ti-lookup-banner__link" href="https://intelligence.any.run/analysis/yara" target="_blank">
+      Try it now
+     </a>
+    </div>
+   </div>
+  </template>
+  <template id="spring-sale-banner">
+   <div class="banner spring-sale-banner js-banner">
+    <div class="spring-sale-banner__cake">
+     <img src="/malware-trends/img/springSale/cake_banner-2x.png">
+     </img>
+    </div>
+    <div class="spring-sale-banner__inner">
+     <div class="spring-sale-banner__col spring-sale-banner__col_title">
+      <span class="title">
+       ANY.RUN is 8!
+      </span>
+      <span class="sub-title">
+       From May 15 to May 31
+      </span>
+     </div>
+     <div class="spring-sale-banner__col spring-sale-banner__col_description">
+      <p class="main-desc">
+       From May 15 to May 31
+      </p>
+      <p>
+       Celebrate with us and grab your gift
+      </p>
+     </div>
+     <div class="spring-sale-banner__col">
+      <span class="spring-sale-banner__action-wrap">
+       <a class="spring-sale-banner__action-link" href="https://app.any.run/plans" id="spring-sale-pricing">
+        Get it now
+       </a>
+      </span>
+     </div>
+    </div>
+    <div class="spring-sale-banner__gift">
+     <img src="/malware-trends/img/springSale/gift-2x.png">
+     </img>
+    </div>
+    <a class="spring-sale-banner__global-link" href="https://app.any.run/plans" id="spring-sale-pricing-global" target="_blank">
+     See the deals
+    </a>
+   </div>
+  </template>
+  <template id="safebrowsing-banner">
+   <div class="banner safebrowsing-banner js-banner">
+    <div class="safebrowsing-banner__inner">
+     <div class="safebrowsing-banner__analysis">
+      <div class="safebrowsing-banner__search-icon">
+       <img alt="search" src="/malware-trends/img/banner/safebrowsing-search-icon.svg"/>
+      </div>
+      <div class="banner-text safebrowsing-banner__text">
+       <span class="safebrowsing-banner__text--bold">
+        Safebrowsing
+       </span>
+       <br/>
+       <span class="safebrowsing-banner__text--opacity">
+        Easy-to-use tool for fast URL analysis
+       </span>
+      </div>
+     </div>
+     <div class="safebrowsing-banner__description">
+      See how phishing behaves
+      <br/>
+      in a full-screen virtual browser
+     </div>
+     <div class="safebrowsing-banner__arrow-icon">
+      <img src="/malware-trends/img/banner/safebrosing-arrow.png">
+      </img>
+     </div>
+     <a class="banner-text safebrowsing-banner__link" href="https://app.any.run" target="_blank">
+      Try beta for FREE
+     </a>
+    </div>
+   </div>
+  </template>
+  <template id="webinar-banner">
+   <div class="webinar-banner top-banner js-banner">
+    <div class="webinar-banner__inner">
+     <div class="webinar-banner__text-content">
+      <div class="webinar-banner__title banner-text">
+       <div class="webinar-banner__title-part">
+        Webinar
+       </div>
+       <div class="webinar-banner__title-part">
+        March 27
+       </div>
+      </div>
+      <div class="webinar-banner__text-wrapper banner-text">
+       <div class="webinar-banner__sub-title">
+        Malware Analysis in ANY.RUN
+       </div>
+       <div class="webinar-banner__description">
+        Detect malware in 40 seconds &amp; collect IOCs in real-time
+       </div>
+      </div>
+     </div>
+     <a class="webinar-banner__link banner-text" href="https://event.webinarjam.com/register/2/l5ol1tm" target="_blank">
+      Register now
+     </a>
+    </div>
+   </div>
+  </template>
+  <link as="style" href="/malware-trends/vendors/css/jquery-ui.min.css" rel="preload">
+   <link as="style" href="/malware-trends/vendors/css/perfect.css" rel="preload">
+    <link as="style" href="/malware-trends/vendors/slick/slick.css" rel="preload">
+     <link as="style" href="/malware-trends/vendors/slick/slick-theme.css" rel="preload">
+      <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js">
+      </script>
+      <script defer="" src="/malware-trends/vendors/js/jquery.min.js">
+      </script>
+      <script defer="" src="/malware-trends/vendors/js/perfect-scrollbar.min.js">
+      </script>
+      <script defer="" src="/malware-trends/vendors/js/slick.min.js">
+      </script>
+      <script defer="" src="/malware-trends/vendors/js/apexcharts.js">
+      </script>
+      <script async="" src="/malware-trends/vendors/js/popper.min.js">
+      </script>
+      <script async="" src="/malware-trends/vendors/js/bootstrap.min.js">
+      </script>
+      <script defer="" src="/malware-trends/dist/threat.js">
+      </script>
+      <!-- Webpage -->
+      <script type="application/ld+json">
+       {
+        "@context": "http://schema.org",
+        "@type": "WebPage",
+        "description": "Lumma is an information stealer that targets cryptocurrency wallets, login credentials, and other sensitive data.",
+        "headline": "Lumma – Malware Trends Tracker by ANY.RUN",
+        "image": {
+            "@type": "ImageObject",
+            "url": "https://any.run/img/logo.svg"
+        },
+        "inLanguage": "en-US",
+        "mainEntityOfPage": "https://any.run/malware-trends/",
+        "name": "Lumma",
+        "url": "https://any.run/malware-trends/lumma"
+      }
+      </script>
+      <!-- End Webpage -->
+      <!--  WPHeader  -->
+      <script type="application/ld+json">
+       {
+        "@context": "http://schema.org/",
+        "@type": "WPHeader",
+        "headline": "Lumma",
+        "description": "Lumma is an information stealer that targets cryptocurrency wallets, login credentials, and other sensitive data.",
+        "inLanguage": "en-US",
+        "name": "Lumma",
+        "url": "https://any.run/malware-trends/lumma",
+        "video": {
+            "@type": "VideoObject",
+            "name": "Lumma",
+            "url": "https://content.any.run/tasks/20a99057-6518-4354-90fe-3857d0a583c8/download/mp4",
+            "thumbnailUrl": "https://content.any.run/tasks/20a99057-6518-4354-90fe-3857d0a583c8/download/mp4",
+            "description": "Lumma – malware analysis by ANY.RUN",
+            "uploadDate": "Thu Nov 16 2023 06:18:00 GMT+0000 (Coordinated Universal Time)"
+        }
+      }
+      </script>
+      <!-- End WPHeader -->
+      <!--  Footer  -->
+      <script type="application/ld+json">
+       {
+        "@context": "http://schema.org/",
+        "@type": "WPFooter",
+        "image": {
+          "@type": "ImageObject",
+          "url": "https://any.run/img/logo.svg"
+        },
+        "inLanguage": "en-US",
+        "name": "Lumma",
+        "url": "https://any.run/malware-trends/lumma"
+      }
+      </script>
+      <!-- End Footer -->
+      <!-- Carousel Items -->
+      <script type="application/ld+json">
+       {
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Meduza",
+              "url": "https://any.run/malware-trends/meduza/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Orcus",
+              "url": "https://any.run/malware-trends/orcus/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "Xfiles",
+              "url": "https://any.run/malware-trends/xfiles/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 4,
+              "name": "Purecrypter",
+              "url": "https://any.run/malware-trends/purecrypter/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 5,
+              "name": "Balada",
+              "url": "https://any.run/malware-trends/balada/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 6,
+              "name": "Lokibot",
+              "url": "https://any.run/malware-trends/lokibot/"
+            }
+        ]
+      }
+      </script>
+      <!-- End Carousel Items -->
+      <!-- Article -->
+      <script type="application/ld+json">
+       {
+        "@context": "http://schema.org",
+        "@type": "Article",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://any.run/malware-trends/lumma/"
+        },
+        "headline": "Lumma – Malware Trends Tracker by ANY.RUN",
+        "author": {
+            "@type": "Person",
+            "name": "Stanislav Gayvoronsky",
+            "url": "http://twitter.com/anyrun_app"
+        },
+        "datePublished": "Thu Nov 16 2023 06:18:00 GMT+0000 (Coordinated Universal Time)",
+        "url": "https://any.run/malware-trends/lumma/",
+        "image": {
+            "@type": "ImageObject",
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "ANY.RUN",
+            "logo": [{
+                "@type": "ImageObject",
+            }],
+            "sameAs": [
+                "https://twitter.com/anyrun_app",
+                "http://www.youtube.com/c/ANYRUN"
+            ]
+        },
+        "description": "Lumma Stealer is a malware-as-a-service software that collects and exfiltrates sensitive data from infected systems.",
+        "dateModified": "Fri Dec 20 2024 07:30:27 GMT+0000 (Coordinated Universal Time)"
+      }
+      </script>
+      <!--  End Article -->
+      <!-- Nav menu -->
+      <script type="application/ld+json">
+       {
+        "@context": "https://schema.org",
+        "@graph":
+          [
+            {
+              "@context": "https://schema.org",
+              "@type":"SiteNavigationElement",
+              "name": "Why us",
+              "url": "https://any.run/why-us/"
+            },
+            {
+              "@context": "https://schema.org",
+              "@type":"SiteNavigationElement",
+              "name": "Service",
+              "url": "https://app.any.run/"
+            },
+            {
+              "@context": "https://schema.org",
+              "@type":"SiteNavigationElement",
+              "name": "Reports",
+              "url": "https://any.run/malware-reports/"
+            },
+            {
+              "@context": "https://schema.org",
+              "@type":"SiteNavigationElement",
+              "name": "Features",
+              "url": "https://any.run/features/"
+            },
+            {
+              "@context": "https://schema.org",
+              "@type":"SiteNavigationElement",
+              "name": "Pricing",
+              "url": "https://app.any.run/plans"
+            },
+            {
+              "@context": "https://schema.org",
+              "@type":"SiteNavigationElement",
+              "name": "Contacts",
+              "url": "https://app.any.run/contact-us"
+            },
+            {
+              "@context": "https://schema.org",
+              "@type":"SiteNavigationElement",
+              "name": "Tracker",
+              "url": "https://any.run/malware-trends/"
+            }
+          ]
+      }
+      </script>
+      <!-- End Nav menu -->
+      <!-- Social media -->
+      <script type="application/ld+json">
+       {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "ANY.RUN",
+        "url": "https://any.run/",
+        "sameAs": [
+          "https://twitter.com/anyrun_app",
+          "http://www.youtube.com/c/ANYRUN"
+        ]
+      }
+      </script>
+      <!-- End Social media -->
+      <!-- Organization -->
+      <script type="application/ld+json">
+       {
+        "@context": "http://schema.org",
+        "@type": "Organization",
+        "@id": "https://any.run/#organization",
+        "name": "ANY.RUN",
+        "legalName": "ANY.RUN LLC",
+        "url": "https://any.run",
+        "logo": "https://any.run/img/logo.svg",
+        "email": "support@any.run",
+        "sameAs": ["https://twitter.com/anyrun_app",
+            "http://www.youtube.com/c/ANYRUN"
+        ],
+        "contactPoint": [{
+          "@type": "ContactPoint",
+          "contactType": "customer service",
+          "url": "https://app.any.run/contact-us",
+          "email": "support@any.run"
+        }]
+      }
+      </script>
+      <!-- End Organization -->
+     </link>
+    </link>
+   </link>
+  </link>
+ </body>
+</html>

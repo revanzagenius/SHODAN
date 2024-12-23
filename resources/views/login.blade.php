@@ -100,10 +100,12 @@
 <body>
     <div class="container">
         <h1>Login</h1>
-        <form>
+
+        <form method="POST" action="{{ route('login.submit') }}">
+            @csrf
             <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" id="username" name="username" placeholder="Masukkan Username Anda" required>
+                <label for="username">Email</label>
+                <input type="email" id="email" name="email" placeholder="Masukkan Email Anda" required>
             </div>
             <div class="form-group">
                 <label for="password">Password</label>
@@ -112,8 +114,6 @@
             <button type="submit" class="btn">Login</button>
         </form>
         <div class="links">
-            <p>Belum punya akun? <a href="#">Daftar</a></p>
-            <p><a href="#">Lupa Password?</a></p>
         </div>
     </div>
 </body>

@@ -222,6 +222,48 @@
                 </div>
             </div>
         </div>
+
+        <!-- Hasil OTX di bawah VirusTotal -->
+<div class="col-md-6">
+    <div class="card shadow mt-5">
+        <div class="card-header bg-info text-white">
+            <h5 class="mb-0">Ringkasan Hasil Pemindaian OTX</h5>
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th class="cve-item">Parameter</th>
+                        <th class="cve-item">Nilai</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th class="cve-item">Threat Level</th>
+                        <td class="cve-item">{{ $data['otx']['threat_level'] ?? 'Tidak tersedia' }}</td>
+                    </tr>
+                    <tr>
+                        <th class="cve-item">Deskripsi</th>
+                        <td class="cve-item">{{ $data['otx']['description'] ?? 'Tidak tersedia' }}</td>
+                    </tr>
+                    <tr>
+                        <th class="cve-item">Jumlah Pulse</th>
+                        <td class="cve-item">{{ $data['otx']['pulse_count'] ?? 'Tidak tersedia' }}</td>
+                    </tr>
+                    <tr>
+                        <th class="cve-item">Pertama Kali Terlihat</th>
+                        <td class="cve-item">{{ $data['otx']['first_seen'] ?? 'Tidak tersedia' }}</td>
+                    </tr>
+                    <tr>
+                        <th class="cve-item">Terakhir Kali Terlihat</th>
+                        <td class="cve-item">{{ $data['otx']['last_seen'] ?? 'Tidak tersedia' }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
         @endif
 </div>
 

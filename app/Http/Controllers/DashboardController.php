@@ -123,6 +123,17 @@ class DashboardController extends Controller
         return $pdf->download("scan_result_{$host->ip}.pdf");
     }
 
+    public function sendPortNewEmail($email, $port)
+    {
+        try {
+            // Kirim email menggunakan Mailable
+            Mail::to($email)->send(new NewPortNotification($port));
+            \Log::info("Email notification sent to {$email} for port {$port->port_number}");
+        } catch (\Exception $e) {
+            \Log::error("Failed to send email to {$email}: " . $e->getMessage());
+        }
+    }
+
     public function handleNewPortData(Request $request)
     {
         // Mendapatkan IP dan email dari input

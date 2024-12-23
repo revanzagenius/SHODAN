@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ $malware['name'] }} - Malware Details</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1f1f1f;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .header h1 {
+            font-size: 2.5em;
+            color: #ff0000;
+        }
+        .details-section {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 40px;
+        }
+        .details-section .description {
+            flex: 2;
+            background-color: #2a2a2a;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .details-section .info {
+            flex: 1;
+            background-color: #2a2a2a;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .info p {
+            margin: 0 0 10px;
+        }
+        .ioc-section {
+            background-color: #2a2a2a;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .ioc-section h3 {
+            margin-top: 0;
+        }
+        .ioc-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .ioc-list li {
+            margin-bottom: 10px;
+        }
+        .ioc-list li span {
+            font-weight: bold;
+        }
+        .ioc-list li a {
+            color: #ff0000;
+            text-decoration: none;
+        }
+        .ioc-list li a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Header Section -->
+    <div class="header">
+        <h1>{{ $malware['name'] }}</h1>
+        <p>Global Rank: {{ $malware['global_rank'] }}</p>
+    </div>
+
+    <!-- Malware Details Section -->
+    <div class="details-section">
+        <!-- Description -->
+        <div class="description">
+            <h2>Description</h2>
+            <p>{{ $malware['description'] }}</p>
+        </div>
+
+        <!-- Malware Info -->
+        <div class="info">
+            <h3>Malware Info</h3>
+            <p><strong>Type:</strong> Ransomware</p>
+            <p><strong>Origin:</strong> Likely North Korea</p>
+            <p><strong>First Seen:</strong> 12 May, 2017</p>
+            <p><strong>Last Seen:</strong> 22 December, 2024</p>
+        </div>
+    </div>
+
+    <!-- IOC Section -->
+    <div class="ioc-section">
+        <h3>Indicators of Compromise (IOCs)</h3>
+        <div class="ioc-list">
+            <h4>IP Addresses</h4>
+            @foreach ($malware['iocs']['IP addresses'] as $ip)
+                <li><span>IP:</span> {{ $ip }}</li>
+            @endforeach
+
+            <h4>Domains</h4>
+            @foreach ($malware['iocs']['Domains'] as $domain)
+                <li><span>Domain:</span> <a href="http://{{ $domain }}" target="_blank">{{ $domain }}</a></li>
+            @endforeach
+
+            <h4>URLs</h4>
+            @foreach ($malware['iocs']['URLs'] as $url)
+                <li><span>URL:</span> <a href="{{ $url }}" target="_blank">{{ $url }}</a></li>
+            @endforeach
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

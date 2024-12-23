@@ -47,8 +47,9 @@
         /* Nav Links Styles */
         .nav-links {
             display: flex;
-            justify-content: flex-end;
             align-items: center;
+            margin-left: auto; /* Menggeser elemen ke kanan */
+            gap: 10px; /* Jarak antar link */
         }
 
         .nav-links a {
@@ -140,7 +141,26 @@
             </div>
             <a href="{{ route('ipscanner') }}">Vulnerability Scanner</a>
             <a href="{{ route('search.index') }}">OSINT Tools</a>
-            <a href="{{ route('news.index') }}">News</a>
+            <div class="dropdown">
+                <a href="#">Feeds</a>
+                <div class="dropdown-content">
+                    <a href="{{ route('news.index') }}">News</a>
+                    <a href="{{ route('malware.index') }}">Malware Trends</a>
+                </div>
+            </div>
+            |
+            <form method="POST" action="{{ route('logout') }}" style="display: inline;">
+                @csrf
+                <button type="submit" style="
+                    background-color: red;
+                    color: white;
+                    border: none;
+                    padding: 5px 10px;
+                    border-radius: 5px;
+                    cursor: pointer;">
+                    Logout
+                </button>
+            </form>
         </div>
     </div>
 </body>

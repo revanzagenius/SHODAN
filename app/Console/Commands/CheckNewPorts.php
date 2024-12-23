@@ -2,93 +2,66 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Port;
-use GuzzleHttp\Client;
-use App\Models\ShodanHost;
 use Illuminate\Console\Command;
+use App\Models\ShodanHost;
+use App\Models\Port;
 use Illuminate\Support\Facades\Mail;
+use App\Mail\NewPortNotification;
+use GuzzleHttp\Client;
 
 class CheckNewPorts extends Command
 {
-    protected $signature = 'ports:check';
-    protected $description = 'Check for new open ports from Shodan and send email notifications.';
+    protected $signature = 'shodan:check-new-ports';
+    protected $description = 'Check for new ports on registered IPs and send notifications.';
 
-    protected $client;
     protected $shodanApiKey;
+    protected $client;
 
     public function __construct()
     {
         parent::__construct();
+        $this->shodanApiKey = env('SHODAN_API_KEY');
         $this->client = new Client();
-        $this->shodanApiKey = env('SHODAN_API_KEY');  // API Key Shodan
     }
 
     public function handle()
     {
-        $hosts = ShodanHost::all(); // Ambil semua host yang ada di database
+        $hosts = ShodanHost::all();
 
         foreach ($hosts as $host) {
-            $this->checkPorts($host);
-        }
+            try {
+                $response = $this->client->get("https://api.shodan.io/shodan/host/{$host->ip}?key={$this->shodanApiKey}");
+                $shodanData = json_decode($response->getBody(), true);
 
-        $this->info('Port check completed.');
-    }
+                if ($shodanData && isset($shodanData['ports'])) {
+                    $newPorts = $shodanData['ports'];
+                    foreach ($newPorts as $portNumber) {
+                        $existingPort = Port::where('shodan_host_id', $host->id)
+                                           ->where('port_number', $portNumber)
+                                           ->first();
 
-    public function checkPorts($host)
-    {
-        try {
-            // Memanggil API Shodan untuk memeriksa port
-            $response = $this->client->get("https://api.shodan.io/shodan/host/{$host->ip}?key={$this->shodanApiKey}");
-            $shodanData = json_decode($response->getBody(), true);
+                        if (!$existingPort) {
+                            // Simpan port baru
+                            $port = $host->ports()->create([
+                                'port_number' => $portNumber,
+                                'asset_group' => 'Unknown',
+                                'trigger' => 'New port detected',
+                                'version' => 'Unknown',
+                                'details' => json_encode(['port' => $portNumber]),
+                            ]);
 
-            if ($shodanData && isset($shodanData['ports'])) {
-                $serviceData = $shodanData['ports']; // Ambil data port
+                            // Kirim email notifikasi
+                            Mail::to($host->email)->send(new NewPortNotification($port));
 
-                foreach ($serviceData as $portNumber) {
-                    $this->processPort($host, $portNumber);
+                            $this->info("Email notification sent for IP: {$host->ip}, Port: {$portNumber}");
+                        }
+                    }
                 }
+            } catch (\Exception $e) {
+                $this->error("Failed to process IP {$host->ip}: " . $e->getMessage());
             }
-        } catch (\Exception $e) {
-            $this->error("Error checking ports for IP {$host->ip}: " . $e->getMessage());
         }
-    }
 
-    public function processPort($host, $portNumber)
-    {
-        // Cek apakah port sudah ada
-        $existingPort = Port::where('shodan_host_id', $host->id)
-                            ->where('port_number', $portNumber)
-                            ->first();
-
-        if (!$existingPort) {
-            // Jika belum ada, simpan port baru
-            $port = $host->ports()->create([
-                'port_number' => $portNumber,
-                'asset_group' => 'Unknown', // Sesuaikan dengan data yang Anda butuhkan
-                'trigger' => 'New port detected',
-                'version' => 'Unknown', // Sesuaikan dengan data yang Anda butuhkan
-                'details' => json_encode(['port' => $portNumber]),
-            ]);
-
-            // Kirim email ke pengguna tentang port baru
-            $this->sendPortNewEmail($host->email, $port);
-        }
-    }
-
-    public function sendPortNewEmail($email, $port)
-    {
-        $data = [
-            'port' => $port->port_number,
-            'asset_group' => $port->asset_group,
-            'trigger' => $port->trigger,
-            'version' => $port->version,
-            'details' => $port->details,
-        ];
-
-        // Mengirim email ke pengguna
-        Mail::send('emails.new_port', $data, function ($message) use ($email) {
-            $message->to($email)
-                    ->subject('New Open Port Detected');
-        });
+        return 0;
     }
 }
